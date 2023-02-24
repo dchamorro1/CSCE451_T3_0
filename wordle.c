@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h> // string.h adds a lot of pre-defined functions
 
 void FUN_00110020(void)
 {
@@ -37,7 +40,7 @@ void FUN_001102b0(void)
 void main(void)
 {
     char cVar1;
-    undefined8 uVar2;
+    char game_description[] = ""; // previously uVar2
     long in_FS_OFFSET;
     uint local_154;
     undefined8 local_150;
@@ -50,7 +53,8 @@ void main(void)
     undefined8 local_20;
 
     local_20 = *(undefined8 *)(in_FS_OFFSET + 0x28);
-    char welcome[] = _ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc(_ZSt4cout, "Welcome to the wordle solver");
+
+    game_description = _ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc(_ZSt4cout, "Welcome to the wordle solver"); //? char string?
 
     _ZNSolsEPFRSoS_E(uVar2, _ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_);
 

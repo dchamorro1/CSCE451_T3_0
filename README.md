@@ -58,3 +58,11 @@ Segmentation fault (core dumped)
 Weird characters like @,#,$,%,^,&,*,(,),-,+ etc gives "cached" answers except for ! which seg faults for some input.
 
 Ctrl+D prints output repeatedly, like when you don't check for input properly in c++.
+
+
+# TODO
+- Figure out how Trie works
+  - Most importantly `find_wild`, and `reset`.
+  - Also constructor, and `add_word`
+- Make reversed source
+- Write out report

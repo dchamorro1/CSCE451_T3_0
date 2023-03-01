@@ -59,6 +59,14 @@ Weird characters like @,#,$,%,^,&,*,(,),-,+ etc gives "cached" answers except fo
 
 Ctrl+D prints output repeatedly, like when you don't check for input properly in c++.
 
+I don't know how the caching works:
+```
+key: a
+adieu
+key: asdfjsadfkjls
+key: a
+key: 
+```
 
 # TODO
 - Figure out how Trie works

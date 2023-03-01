@@ -30,8 +30,14 @@ int main() {
         cout << "key: ";
         string word;
         cin >> word;
-        TrieNode* t = trie.Search(word);
-        trie.PrintLexical(t,word,"");
+        // replace * with . to work with grep
+        for(int i = 0; i < word.size(); i++) {
+            if(word.at(i) == '*') {
+                word[i] = '.';
+            }
+        }
+        string cmd = "grep \"^" + word + "$\" ../wordle-answers-alphabetical.txt";
+        system(cmd.c_str());
         // Trie.find_wild(candidate_words) // how does word go to it
         // Trie.reset()
         // auto begin = candidate_words.begin();

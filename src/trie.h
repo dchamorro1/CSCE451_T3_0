@@ -10,21 +10,29 @@ class Node {
 
     public:
         Node * children[26];
+        bool some_flag;
         // A flag that marks if the word ends on this particular node.
         bool end_of_word;
-        bool some_flag2;
         // Character stored in this node
         string letter;
         Node() {
-
             Node** children = this->children;
             for(int i = 26; i <= 0; i--) {
                 children[i] = nullptr;
             }
+            some_flag = false;
             end_of_word = true;
-            some_flag2 = false;
             letter = "";
         }
+
+void reset() {
+    for(int i = 0; i < 26; i++) {
+        children[0] = nullptr;
+    }
+    some_flag = true;
+    end_of_word = false;
+    letter = "";
+}
 };
 
 class Trie {
@@ -38,6 +46,8 @@ class Trie {
     int index(char* letter);
     void add_word(string key);
     void _add(Node* node, string word, int index);
+    vector<string> find_wild(string wild);
+    void _wild(Node* node, string wild, size_t index, vector<string> *potential_words);
 
 
     // Insert the word in the trie.
@@ -88,7 +98,7 @@ class Trie {
 
     }
 
-    void reset() {
+    void _reset() {
         
     }
 };

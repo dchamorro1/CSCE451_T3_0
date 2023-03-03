@@ -1,11 +1,11 @@
 #include <iostream>
 #include <fstream>
 #include "trie.h"
+#include "words.h"
 
 using namespace std;
 
 int main() {
-    FILE* fp = fopen("wordle-answers-alphabetical.txt", "r");
     cout << "Welcome to the worldle solver" << endl;
     cout << "This is meant to help you beat the game wordle" << endl;
     cout << "If you give us a \'key\' we can give you all the possible options" << endl;
@@ -18,22 +18,20 @@ int main() {
     // TODO: embed file into binary
     Trie trie;
 
-    ifstream words_file("../wordle-answers-alphabetical.txt"); 
-    string word;
-    while(getline(words_file,word)) {
-        trie.add_word(word);
+    for(int i = 0; i < 2317; i++) {
+        // string word(words[i]);
+        trie.add_word(WORDS[i]);
     }
 
-
     // While loop that does calles Trie::find_wild
+    vector<string> potential_words;
     do {
         cout << "key: ";
         string word;
         cin >> word;
 
-        vector<string> potential_words;
         trie.find_wild(word, potential_words);
-        trie.reset();
+        trie.root->reset();
 
         // print out the words
         auto begin = potential_words.begin();

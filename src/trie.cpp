@@ -1,7 +1,7 @@
 #include "trie.h"
 
 Trie::Trie() {
-    this->root;
+    this->root = new Node();
 }
 
 int Trie::index(char* letter) {
@@ -14,20 +14,24 @@ void Trie::add_word(string key) {
 }
 
 void Trie::_add(Node* node, string word, int index) {
-    if(index != word.length()) {
+    // Only do stuff if not at the end of the word
+    if(index != word.length()) { 
         int letter_index = Trie::index(&word[index]);
-        if(node->children[letter_index] == nullptr) {
+        // if the next node is missing for the letter, add it
+        if(node->children[letter_index] == nullptr) { 
             Node* new_node = new Node();
             node->children[letter_index] = new_node;
         }
+        // If at the end of the word
+        if(index == word.length() - 1) { 
+            letter_index = Trie::index(&word[index]);
+            // Set leaf to true
+            node->children[letter_index]->end_of_word= true; 
+            // Add word to the leaf
+            node->children[letter_index]->letter = word;
+        }
+        letter_index = Trie::index(&word[index]);
+        this->_add(node->children[letter_index],word,index+1);
     }
-
-    if(index == word.length() - 1) {
-        int letter_index = Trie::index(&word[index]);
-        node->children[letter_index]->some_flag2 = true;
-        node->children[letter_index]->letter = word;
-    }
-    int letter_index = Trie::index(&word[index]);
-    this->_add(node->children[letter_index],word,index+1);
     return;
 }

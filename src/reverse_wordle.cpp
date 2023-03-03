@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-#include "trie.hpp"
+#include "trie.h"
 
 using namespace std;
 

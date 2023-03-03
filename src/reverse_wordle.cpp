@@ -21,7 +21,7 @@ int main() {
     ifstream words_file("../wordle-answers-alphabetical.txt"); 
     string word;
     while(getline(words_file,word)) {
-        trie.Insert(word);
+        trie.add_word(word);
     }
 
 
@@ -30,14 +30,26 @@ int main() {
         cout << "key: ";
         string word;
         cin >> word;
-        // replace * with . to work with grep
-        for(int i = 0; i < word.size(); i++) {
-            if(word.at(i) == '*') {
-                word[i] = '.';
+
+        vector<string> potential_words;
+        trie.find_wild(word, potential_words);
+        trie.reset();
+
+        // print out the words
+        auto begin = potential_words.begin();
+        auto end = potential_words.end();
+        while(true) {
+            if(begin == end) {
+                break;
             }
+            word = *begin;
+            cout << word << endl;
+            begin++;
         }
-        string cmd = "grep \"^" + word + "$\" ../wordle-answers-alphabetical.txt";
-        system(cmd.c_str());
+
+        // replace * with . to work with grep
+        // string cmd = "grep \"^" + word + "$\" ../wordle-answers-alphabetical.txt";
+        // system(cmd.c_str());
         // Trie.find_wild(candidate_words) // how does word go to it
         // Trie.reset()
         // auto begin = candidate_words.begin();

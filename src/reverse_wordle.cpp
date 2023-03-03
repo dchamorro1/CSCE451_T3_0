@@ -15,11 +15,8 @@ int main() {
     cout << "\n\n\n\n" << endl;
 
     // Add Words to Trie
-    // TODO: embed file into binary
     Trie trie;
-
     for(int i = 0; i < 2317; i++) {
-        // string word(words[i]);
         trie.add_word(WORDS[i]);
     }
 
@@ -44,6 +41,8 @@ int main() {
             cout << word << endl;
             begin++;
         }
+    } while(true);
+}
 
         // replace * with . to work with grep
         // string cmd = "grep \"^" + word + "$\" ../wordle-answers-alphabetical.txt";
@@ -59,6 +58,3 @@ int main() {
         //     cout << *begin << endl;
         //     begin++;
         // }
-
-    } while(true);
-}

@@ -6,7 +6,7 @@
 using namespace std;
 
 int main() {
-    cout << "Welcome to the worldle solver" << endl;
+    cout << "Welcome to the wordle solver" << endl;
     cout << "This is meant to help you beat the game wordle" << endl;
     cout << "If you give us a \'key\' we can give you all the possible options" << endl;
     cout << "For example if you konw the word is in the format:" << endl;
@@ -27,8 +27,9 @@ int main() {
         string word;
         cin >> word;
 
-        trie.find_wild(word, potential_words);
-        trie.root->reset();
+        potential_words.clear();
+        potential_words = trie.find_wild(word);
+        // trie.root->reset();
 
         // print out the words
         auto begin = potential_words.begin();

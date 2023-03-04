@@ -21,7 +21,7 @@ class Node {
                 children[i] = nullptr;
             }
             some_flag = false;
-            end_of_word = true;
+            end_of_word = false;
             letter = "";
         }
 
@@ -47,7 +47,17 @@ class Trie {
     void add_word(string key);
     void _add(Node* node, string word, int index);
     vector<string> find_wild(string wild);
-    void _wild(Node* node, string wild, size_t index, vector<string> *potential_words);
+    void _wild(Node* node, string wild, size_t index, vector<string> &potential_words);
+
+    void print_out(Node* node) {
+        if(node == nullptr) {
+            return;
+        }
+        cout << node->letter << " " << node->end_of_word << endl;
+        for(auto child : node->children) {
+            print_out(child);
+        }
+    }
 
 
     // Insert the word in the trie.
@@ -93,10 +103,6 @@ class Trie {
     //         }
     //     }
     // }
-
-    void find_wild(string word, vector<string> &potential_words) {
-
-    }
 
     void _reset() {
         

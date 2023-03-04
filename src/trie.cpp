@@ -35,3 +35,35 @@ void Trie::_add(Node* node, string word, int index) {
     }
     return;
 }
+
+vector<string> Trie::find_wild(string wild) {
+    vector<string> results;
+    _wild(this->root, wild, 0, results);
+    return results;
+}
+
+void Trie::_wild(Node* node, string wild, size_t index, vector<string> &potential_words) {
+    // Not how wordle.out works.
+    // reimplemented
+    if(node == nullptr) {
+        return;
+    }
+    if(index == wild.size()) {
+        if(node->end_of_word) { // add only if end of the wildcard and the node is a leaf
+            potential_words.push_back(node->letter);
+        }
+        return;
+    }
+    if(wild[index] == '*') { // check all the children if it is a wild card
+        for(auto child : node->children) {
+            _wild(child, wild, index+1, potential_words);
+        }
+
+    } else {
+        size_t node_i = Trie::index(&wild[index]);
+        if(0 <= node_i && node_i < 26) { // only check child if its a-z
+            Node* child = node->children[node_i];
+            _wild(child,wild,index+1,potential_words);
+        }
+    }
+}

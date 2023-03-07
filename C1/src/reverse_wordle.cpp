@@ -1,12 +1,12 @@
 #include <iostream>
 #include <fstream>
-#include "trie.hpp"
+#include "trie.h"
+#include "words.h"
 
 using namespace std;
 
 int main() {
-    FILE* fp = fopen("wordle-answers-alphabetical.txt", "r");
-    cout << "Welcome to the worldle solver" << endl;
+    cout << "Welcome to the wordle solver" << endl;
     cout << "This is meant to help you beat the game wordle" << endl;
     cout << "If you give us a \'key\' we can give you all the possible options" << endl;
     cout << "For example if you konw the word is in the format:" << endl;
@@ -15,29 +15,39 @@ int main() {
     cout << "\n\n\n\n" << endl;
 
     // Add Words to Trie
-    // TODO: embed file into binary
     Trie trie;
-
-    ifstream words_file("../wordle-answers-alphabetical.txt"); 
-    string word;
-    while(getline(words_file,word)) {
-        trie.Insert(word);
+    for(int i = 0; i < 2317; i++) {
+        trie.add_word(WORDS[i]);
     }
 
-
     // While loop that does calles Trie::find_wild
+    vector<string> potential_words;
     do {
         cout << "key: ";
         string word;
         cin >> word;
-        // replace * with . to work with grep
-        for(int i = 0; i < word.size(); i++) {
-            if(word.at(i) == '*') {
-                word[i] = '.';
+
+        potential_words.clear();
+        potential_words = trie.find_wild(word);
+        // trie.root->reset();
+
+        // print out the words
+        auto begin = potential_words.begin();
+        auto end = potential_words.end();
+        while(true) {
+            if(begin == end) {
+                break;
             }
+            word = *begin;
+            cout << word << endl;
+            begin++;
         }
-        string cmd = "grep \"^" + word + "$\" ../wordle-answers-alphabetical.txt";
-        system(cmd.c_str());
+    } while(true);
+}
+
+        // replace * with . to work with grep
+        // string cmd = "grep \"^" + word + "$\" ../wordle-answers-alphabetical.txt";
+        // system(cmd.c_str());
         // Trie.find_wild(candidate_words) // how does word go to it
         // Trie.reset()
         // auto begin = candidate_words.begin();
@@ -49,6 +59,3 @@ int main() {
         //     cout << *begin << endl;
         //     begin++;
         // }
-        
-    } while(true);
-}

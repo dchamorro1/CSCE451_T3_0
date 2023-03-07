@@ -1,6 +1,10 @@
 #include <iostream>
 #include <string>
 
+#include <stdio.h>
+#include <string.h>
+
+
 using namespace std;
 
 void twenty_one(int firstMatrix[][10], int secondMatrix[][10], int rowFirst, int columnFirst, int rowSecond, int columnSecond)

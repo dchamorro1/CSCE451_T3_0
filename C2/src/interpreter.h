@@ -39,7 +39,13 @@ static unsigned int SP = 0;
 // unsigned short PROGRAM[] = {3,0,3,0,3,0,3,0,3,0,3,0,7,38,1,0,3,0,3,0,3,0,3,0,3,0,3,0,3,0,3,0,3,0,3,0,3,0,3,0,3,0,3,0,3,0,3,0,3,0,1,0,3,0,3,0,3,0,3,0,3,0,1,0,3,0,3,0,2,0,2,0,2,0,4,0,8,6,1,0,3,0,3,0,5,0,4,0,4,0,4,0,5,0,3,0,3,0,3,0,3,0,3,0,3,0,3,0,5,0,5,0,3,0,3,0,3,0,5,0,1,0,3,0,3,0,5,0,2,0,3,0,3,0,3,0,3,0,3,0,3,0,3,0,3,0,5,0,4,0,4,0,4,0,4,0,4,0,4,0,4,0,4,0,5,0,3,0,3,0,3,0,5,0,4,0,4,0,4,0,4,0,4,0,4,0,5,0,4,0,4,0,4,0,4,0,4,0,4,0,4,0,4,0,5,0,1,0,1,0,4,0,4,0,5,0,0,0};
 unsigned short PROGRAM[] = {303,0,303,0,303,0,303,0,303,0,303,0,307,38,301,0,303,0,303,0,303,0,303,0,303,0,303,0,303,0,303,0,303,0,303,0,303,0,303,0,303,0,303,0,303,0,303,0,303,0,301,0,303,0,303,0,303,0,303,0,303,0,301,0,303,0,303,0,302,0,302,0,302,0,304,0,308,6,301,0,303,0,303,0,305,0,304,0,304,0,304,0,305,0,303,0,303,0,303,0,303,0,303,0,303,0,303,0,305,0,305,0,303,0,303,0,303,0,305,0,301,0,303,0,303,0,305,0,302,0,303,0,303,0,303,0,303,0,303,0,303,0,303,0,303,0,305,0,304,0,304,0,304,0,304,0,304,0,304,0,304,0,304,0,305,0,303,0,303,0,303,0,305,0,304,0,304,0,304,0,304,0,304,0,304,0,305,0,304,0,304,0,304,0,304,0,304,0,304,0,304,0,304,0,305,0,301,0,301,0,304,0,304,0,305,0,300,0};
 
-
+// choose a and b find c though m xor (a xor b)
+// m = The key is Urban Muller
+// m = 546865206b657920697320557262616e204d756c6c6572
+// a = 347e64aadfd2b124565953e62dd37dcf000ef5815cacc2
+// b = 71d328ad968b089823f2dfa2ad2ecf8f7ff3a52bda02c2
+// From cyberchef https://cyberchef.org/#recipe=XOR(%7B'option':'Hex','string':'347e64aadfd2b124565953e62dd37dcf000ef5815cacc2'%7D,'Standard',true)XOR(%7B'option':'Hex','string':'71d328ad968b089823f2dfa2ad2ecf8f7ff3a52bda02c2'%7D,'Standard',true)To_Hex('None',0)&input=VGhlIGtleSBpcyBVcmJhbiBNdWxsZXI
+// c = 11c52927223cc09c1cd8ac11f29fd32e5fb025c6eacb72
 
 int execute_bf(instruction_t* PROGRAM, unsigned short offset, vector<unsigned short> &result) {
     unsigned short data[DATA_SIZE], pc = 0;
@@ -63,10 +69,11 @@ int execute_bf(instruction_t* PROGRAM, unsigned short offset, vector<unsigned sh
     return ptr != DATA_SIZE ? SUCCESS : FAILURE;
 }
 
-int main() {
-    vector<unsigned short> v;
-    execute_bf((instruction_t*)PROGRAM, 300, v);
+// int main() {
+//     // How to use
+//     vector<unsigned short> v;
+//     execute_bf((instruction_t*)PROGRAM, 300, v);
     
-    string a{v.begin(), v.end()};
-    cout << a << endl;
-}
+//     string a{v.begin(), v.end()};
+//     cout << a << endl;
+// }

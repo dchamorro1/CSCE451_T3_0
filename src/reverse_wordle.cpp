@@ -49,6 +49,6 @@ int main() {
         //     cout << *begin << endl;
         //     begin++;
         // }
-
+        
     } while(true);
 }

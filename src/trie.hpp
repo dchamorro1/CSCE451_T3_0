@@ -3,7 +3,6 @@
 using namespace std;
 // source https://algotree.org/algorithms/trie/
 class TrieNode {
-
     public:
         TrieNode * children[26];
         // A flag that marks if the word ends on this particular node.
@@ -20,7 +19,6 @@ class TrieNode {
 };
 
 class Trie {
-
     public:
 
     TrieNode root;
@@ -47,10 +45,10 @@ class Trie {
         for (size_t i = 0; i < str.size(); i++) {
             if (current->children[str.at(i)-'a']) {
                 current = current->children[str.at(i)-'a'];
-             } else {
+            } else {
                 current = NULL;
                 break;
-             }
+            }
         }
         return current;
     }

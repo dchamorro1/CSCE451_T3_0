@@ -4,7 +4,6 @@
 
 using namespace std;
 
-
 const map<char, string> CIPHER = {
   {'a', "AAAAA"}, {'b', "AAAAB"}, {'c', "AAABA"}, {'d', "AAABB"}, {'e', "AABAA"},
   {'f', "AABAB"}, {'g', "AABBA"}, {'h', "AABBB"}, {'i', "ABAAA"}, {'j', "ABAAB"},

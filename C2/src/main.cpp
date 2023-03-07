@@ -95,6 +95,26 @@ std::vector<unsigned short> from_hex(const std::vector<unsigned short>& a) {
     }
     return out;
 }
+/* Quick and dirty conversion from a single character to its hex equivelent */
+constexpr char int2char(std::uint8_t Input)
+{
+    return ((Input >= 0) && (Input <= 9))
+    ? (Input + 48)
+    : (Input + 87);
+}
+
+void print(const std::vector<unsigned short>& a) {
+    for(int i = 0; i < a.size(); i++) {
+        cout << (char)a[i];
+    }
+    cout << endl;
+}
+void print_hex(const std::vector<unsigned short>& a) {
+    for(int i = 0; i < a.size(); i++) {
+        cout << int2char(a[i]/16) << int2char(a[i]%16);
+    }
+    cout << endl;
+}
 
 void level_3() {
     // TODO: 
@@ -119,20 +139,22 @@ void level_3() {
     
     vector<unsigned short> v;
     vector<unsigned short> v2;
-    if(!RUN_PROG(PROGRAMS[0], 42,v)) { // rand1
-        RUN_PROG(PROGRAMS[1],56,v2); // rand2
-    } else {
+    v.clear();
+    int status = execute_bf((instruction_t*)PROGRAMS[0],42, v);
+    if(!status) { // rand1
         RUN_PROG(PROGRAMS[2],12,v2); // rand3
+    } else {
+        RUN_PROG(PROGRAMS[1],56,v2); // rand2
     }
-    cout << string(v.begin(),v.end()) << endl;
-    cout << string(v2.begin(),v2.end()) << endl;
+    cout << "rand1: " << string(v.begin(),v.end()) << endl;
+    cout << "rand3: " << string(v2.begin(),v2.end()) << endl;
     auto a = from_hex(v);
     auto b = from_hex(v2);
-    return;
     v = xor_vec(a,b);
-    return;
     // v = rand1 xor rand3 xor key
     v = xor_vec(v,key_arr);
+    cout << "rand1^rand3^key: ";
+    print_hex(v);
 
 
     // v2 = a
@@ -143,15 +165,21 @@ void level_3() {
 
     v2.clear();
     vector<unsigned short> v3;
-    if(!RUN_PROG(PROGRAMS[3],548,v2)) { // a
+    if(RUN_PROG(PROGRAMS[3],548,v2)) { // a
         RUN_PROG(PROGRAMS[5],693,v3);   // b
     } else {
         RUN_PROG(PROGRAMS[5],159,v3);   // b
     }
+    cout << "a: " << string(v2.begin(),v2.end()) << endl;
+    cout << "b: " << string(v3.begin(),v3.end()) << endl;
     v2 = xor_vec(from_hex(v2),from_hex(v3));
+    cout << "a^b: ";
+    print_hex(v2);//<< string(v2.begin(), v2.begin()) << endl;
 
     // v = v xor v2 = rand1 xor rand3 xor key xor a xor b
     v = xor_vec(v,v2);
+    cout << "v^v2: ";
+    print_hex(v);
 
     // v3 = rand4
     // if successfull
@@ -161,31 +189,45 @@ void level_3() {
 
     v3.clear();
     vector<unsigned short> v4;
-    if(!RUN_PROG(PROGRAMS[4],159,v3)) { // rand4
+    if(RUN_PROG(PROGRAMS[4],159,v3)) { // rand4
         RUN_PROG(PROGRAMS[6],928,v4);   // c
     } else {
         RUN_PROG(PROGRAMS[6],56,v4);    // c
     }
+    cout << "rand4: " << string(v3.begin(), v3.end()) << endl;
+    cout << "c: " << string(v4.begin(), v4.end()) << endl;
     // v3 = rand4 xor c
     v3 = xor_vec(from_hex(v3),from_hex(v4));
+    cout << "rand4^c: ";
+    print_hex(v3);
 
     v4.clear();
     // v4 = rand1
     RUN_PROG(PROGRAMS[0], 42,v4);
+    cout << "rand1: " << string(v4.begin(), v4.end()) << endl;
     // v4 = rand1 ^ key
     v4 = xor_vec(from_hex(v4), key_arr);
+    cout << "rand1^key: ";
+    print_hex(v4);
 
     vector<unsigned short> v5;
     // v5 = rand3
     RUN_PROG(PROGRAMS[2],12,v5);
+    cout << "rand3: " << string(v5.begin(), v5.end()) << endl;
     // v5 = key ^ rand3
     v5 = xor_vec(from_hex(v5), key_arr);
+    cout << "key^rand3: ";
+    print_hex(v5);
 
     // v6 = rand4
     vector<unsigned short> v6;
     RUN_PROG(PROGRAMS[4],159,v6);
+    cout << "rand4: " << string(v6.begin(), v6.end()) << endl;
 
     v = xor_vec(xor_vec(v,v5),xor_vec(xor_vec(v3,v4),from_hex(v6)));
+    cout << "v: ";
+    print_hex(v);
+    cout << string(v.begin(), v.end()) << endl;
     for(int i = 0; i < v.size(); i++) {
         if(v[i] != 0) {
             cout << "You have failed" << endl;

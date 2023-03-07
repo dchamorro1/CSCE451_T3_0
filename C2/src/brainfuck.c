@@ -128,14 +128,16 @@ int main(int argc, const char * argv[])
     
     unsigned short offset = atoi(argv[2]);
     status = compile_bf(fp);
+
+    printf("// %s %d\n", argv[1], offset);
     printf("{");
-    for(int i = 0; i < PROGRAM_SIZE; i++) {
+    for(int i = 0; i < 512; i++) {
         printf("%d,%d,", (unsigned short)(PROGRAM[i].operator+offset), PROGRAM[i].operand);
-        if(PROGRAM[i].operator == OP_END) {
-            printf("\b}\n");
-            break;
-        }
+        // if(PROGRAM[i].operator == OP_END) {
+        //     // break;
+        // }
     }
+    printf("\b},\n");
     fclose(fp);
     if (status == SUCCESS) {
         status = execute_bf();

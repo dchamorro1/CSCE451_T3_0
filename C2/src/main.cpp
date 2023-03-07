@@ -7,23 +7,36 @@
 
 #define RUN_PROG(prog,offset,v) execute_bf((instruction_t*)prog,offset,v)
 
-const unsigned short PROGRAMS[][] = {
-    // rand1, 42
-    // rand2, 56
-    // rand3, 12
-    // a, 548
-    // rand4, 159
-    // b, 693
-    // c, 928
-    // hint1, 
-    // rand5
-    // hint2
-    // rand6
+const unsigned short PROGRAMS[][11] = {
+    {},// rand1, 42
+    {},// rand2, 56
+    {},// rand3, 12
+    {},// a, 548
+    {},// rand4, 159
+    {},// b, 693
+    {},// c, 928
+    {},// hint1, 
+    {},// rand5
+    {},// hint2
+    {},// rand6
+};
+
+std::vector<unsigned short> xor_vec(const std::vector<unsigned short>& a, const std::vector<unsigned short>& b) {
+    std::vector<unsigned short> result;
+    int len_a = a.size();
+    int len_b = b.size();
+    int len = std::max(len_a, len_b);
+    for (int i = 0; i < len; i++) {
+        int value_a = a[i % len_a];
+        int value_b = b[i % len_b];
+        result.push_back(value_a ^ value_b);
+    }
+    return result;
 }
+
 void level_3() {
     // TODO: 
     // - generate programs
-    // - write xor
     // - write from_hex
 
     // get input
@@ -44,7 +57,7 @@ void level_3() {
     } else {
         RUN_PROG(PROGRAMS[2],12,v2);
     }
-    v = xor(v,v2);
+    v = xor_vec(v,v2);
 
 
     // v2 = a
@@ -59,7 +72,7 @@ void level_3() {
     } else {
         RUN_PROG(PROGRAMS[5],159,v3);
     }
-    v2 = xor(v2,v3);
+    v2 = xor_vec(v2,v3);
 
     // v = v xor v2
 
@@ -78,6 +91,6 @@ void level_3() {
 }
 
 
-void main() {
+int main() {
     level_3();
 }

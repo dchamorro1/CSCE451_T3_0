@@ -122,9 +122,13 @@ void level_3() {
     // - write from_hex
 
     // get input
+    // 84 104 101 32 107 101 121 32 105 115 32 85 114 98 97 110 32 77 117 108 108 101 114
+    // 84 104 101 32 107 101 121 32 105 115 32 85 114 98 97 110 32 77 117 108 108 101
+    // string key = "The key is Urban Muller\n";
     string key;
     cout << "Key: ";
-    cin >> key;
+    getline(cin,key);
+    key += '\n';
 
     // v = rand1
     // if successfull
@@ -133,15 +137,16 @@ void level_3() {
     //      v = rand1 xor rand3
 
     vector<unsigned short> key_arr; // convert from key
-    for(int i = 0; i < key.size(); i++) {
+    for(int i = 0; i < key.size()-1; i++) {
         key_arr.push_back(key[i]);
+        cout << key_arr[i] << " ";
     }
     
     vector<unsigned short> v;
     vector<unsigned short> v2;
     v.clear();
     int status = execute_bf((instruction_t*)PROGRAMS[0],42, v);
-    if(!status) { // rand1
+    if(status) { // rand1
         RUN_PROG(PROGRAMS[2],12,v2); // rand3
     } else {
         RUN_PROG(PROGRAMS[1],56,v2); // rand2
@@ -155,6 +160,7 @@ void level_3() {
     v = xor_vec(v,key_arr);
     cout << "rand1^rand3^key: ";
     print_hex(v);
+    // cout << endl;
 
 
     // v2 = a
@@ -201,36 +207,57 @@ void level_3() {
     cout << "rand4^c: ";
     print_hex(v3);
 
+    // rand4^rand1^rand3
     v4.clear();
-    // v4 = rand1
-    RUN_PROG(PROGRAMS[0], 42,v4);
-    cout << "rand1: " << string(v4.begin(), v4.end()) << endl;
-    // v4 = rand1 ^ key
-    v4 = xor_vec(from_hex(v4), key_arr);
-    cout << "rand1^key: ";
-    print_hex(v4);
-
     vector<unsigned short> v5;
-    // v5 = rand3
-    RUN_PROG(PROGRAMS[2],12,v5);
-    cout << "rand3: " << string(v5.begin(), v5.end()) << endl;
-    // v5 = key ^ rand3
-    v5 = xor_vec(from_hex(v5), key_arr);
-    cout << "key^rand3: ";
-    print_hex(v5);
+    // RUN_PROG(PROGRAMS[3],159,v5);
 
-    // v6 = rand4
-    vector<unsigned short> v6;
-    RUN_PROG(PROGRAMS[4],159,v6);
-    cout << "rand4: " << string(v6.begin(), v6.end()) << endl;
+    RUN_PROG(PROGRAMS[4],159,v5); // rand4
+    RUN_PROG(PROGRAMS[0],42,v4); // rand1
+    v4 = xor_vec(from_hex(v5),from_hex(v4)); // rand1^rand4
+    v5.clear();
+    RUN_PROG(PROGRAMS[2],12,v5); // rand3
+    v4 = xor_vec(v4,from_hex(v5)); // rand1^rand4^rand3
 
-    v = xor_vec(xor_vec(v,v5),xor_vec(xor_vec(v3,v4),from_hex(v6)));
-    cout << "v: ";
+    cout << "V: ";
     print_hex(v);
-    cout << string(v.begin(), v.end()) << endl;
+    v4 = xor_vec(v4,v3);
+    cout << v4.size() << endl;
+    cout << v5.size() << endl;
+    v5 = xor_vec(v, v4);
+    cout << v5.size() << endl;
+    cout << "V: ";
+    print_hex(v5);
+    // v4.clear();
+    // // v4 = rand1
+    // RUN_PROG(PROGRAMS[0], 42,v4);
+    // cout << "rand1: " << string(v4.begin(), v4.end()) << endl;
+    // // v4 = rand1 ^ key
+    // v4 = xor_vec(from_hex(v4), key_arr);
+    // cout << "rand1^key: ";
+    // print_hex(v4);
+
+    // vector<unsigned short> v5;
+    // // v5 = rand3
+    // RUN_PROG(PROGRAMS[2],12,v5);
+    // cout << "rand3: " << string(v5.begin(), v5.end()) << endl;
+    // // v5 = key ^ rand3
+    // v5 = xor_vec(from_hex(v5), key_arr);
+    // cout << "key^rand3: ";
+    // print_hex(v5);
+
+    // // v6 = rand4
+    // vector<unsigned short> v6;
+    // RUN_PROG(PROGRAMS[4],159,v6);
+    // cout << "rand4: " << string(v6.begin(), v6.end()) << endl;
+
+    // v = xor_vec(xor_vec(v,v5),xor_vec(xor_vec(v3,v4),from_hex(v6)));
+    // cout << "v: ";
+    // print_hex(v);
+    v = v5;
     for(int i = 0; i < v.size(); i++) {
         if(v[i] != 0) {
-            cout << "You have failed" << endl;
+            cout << "You have failed " << v[i] << endl;
             return;
         }
     }
@@ -247,16 +274,16 @@ void level_3() {
 
 
 int main() {
-    vector<unsigned short> v,v2;
-    execute_bf((instruction_t*)PROGRAMS[3], 548, v);
-    v2 = from_hex(v);
-    v.clear();
-    execute_bf((instruction_t*)PROGRAMS[5],693, v);
-    v2 = xor_vec(from_hex(v),v2);
-    v.clear();
-    execute_bf((instruction_t*)PROGRAMS[6],928, v);
-    v2 = xor_vec(from_hex(v),v2);
-    v.clear();
-    cout << string(v2.begin(),v2.end()) << endl;
+    // vector<unsigned short> v,v2;
+    // execute_bf((instruction_t*)PROGRAMS[3], 548, v);
+    // v2 = from_hex(v);
+    // v.clear();
+    // execute_bf((instruction_t*)PROGRAMS[5],693, v);
+    // v2 = xor_vec(from_hex(v),v2);
+    // v.clear();
+    // execute_bf((instruction_t*)PROGRAMS[6],928, v);
+    // v2 = xor_vec(from_hex(v),v2);
+    // v.clear();
+    // cout << string(v2.begin(),v2.end()) << endl;
     level_3();
 }

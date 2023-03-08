@@ -250,7 +250,7 @@ int level_2() {
     // Prompt the user to enter the password
     cout << "Please enter the password for level 2: ";
     string input;
-    cin >> input;
+    getline(cin,input);
 
     // Convert the user's input to a character array
     char input_chars[input.length() + 1];
@@ -383,10 +383,10 @@ int level_3() {
 
 int main() {
     cout << "Beat 3 levels to clear the game" << endl;
-    
+
     if (level_1() == -1)
         exit(0);
-    if(level_2() == -1)
+    if (level_2() == -1)
         exit(0);
     if (level_3() == -1)
         exit(0);

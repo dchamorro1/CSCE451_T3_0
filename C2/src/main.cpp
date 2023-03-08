@@ -1,4 +1,8 @@
 #include <iostream> 
+#include <string>
+#include <map>
+#include <stdio.h>
+#include <string.h>
 #include "interpreter.h"
 
 #define RUN_PROG(prog,offset,v) execute_bf((instruction_t*)prog,offset,v)
@@ -111,11 +115,163 @@ int print_hex(const std::vector<unsigned short>& a) {
     return out;
 }
 
-void level_3() {
+const map<char, string> CIPHER = {
+  {'a', "AAAAA"}, {'b', "AAAAB"}, {'c', "AAABA"}, {'d', "AAABB"}, {'e', "AABAA"},
+  {'f', "AABAB"}, {'g', "AABBA"}, {'h', "AABBB"}, {'i', "ABAAA"}, {'j', "ABAAB"},
+  {'k', "ABABA"}, {'l', "ABABB"}, {'m', "ABBAA"}, {'n', "ABBAB"}, {'o', "ABBBA"},
+  {'p', "ABBBB"}, {'q', "BAAAA"}, {'r', "BAAAB"}, {'s', "BAABA"}, {'t', "BAABB"},
+  {'u', "BABAA"}, {'v', "BABAB"}, {'w', "BABBA"}, {'x', "BABBB"}, {'y', "BBAAA"},
+  {'z', "BBAAB"}
+};
+
+string encodeBaconCipher(const string& plaintext) {
+  string ciphertext;
+  for (char c : plaintext) {
+    if (isalpha(c)) {
+      ciphertext += CIPHER.at(tolower(c));
+    }
+  }
+  return ciphertext;
+}
+
+string decodeV(const string& ciphertext, const string& key) {
+  string plaintext;
+  for (size_t i = 0; i < ciphertext.length(); i++) {
+    char c = ciphertext[i];
+    char k = key[i % key.length()];
+    plaintext += static_cast<char>((c - k + 26) % 26 + 'A');
+  }
+  return plaintext;
+}
+
+bool checkPassword(const string& password) {
+  const string encryptedPassword = "BBAAAABBAABBAAAAAABABABAAABAAAABABBBAAABBABBABABBBAABBAAAABAABAAB";
+
+  string decryptedPassword = "";
+  for (size_t i = 0; i < encryptedPassword.length(); i += 5) {
+    string code = encryptedPassword.substr(i, 5);
+    for (const auto& [c, bacon] : CIPHER) {
+      if (bacon == code) {
+        decryptedPassword += c;
+        break;
+      }
+    }
+  }
+
+  string decodedV = decodeV(decryptedPassword, "dinosaur");
+  return decodedV == password;
+}
+
+void twenty_one(int firstMatrix[][10], int secondMatrix[][10], int rowFirst, int columnFirst, int rowSecond, int columnSecond)
+{
+	int i, j;
+	cout << endl << "Enter elements of matrix 1:" << endl;
+	for(i = 0; i < rowFirst; ++i)
+	{
+		for(j = 0; j < columnFirst; ++j)
+		{
+			cout << "Enter elements a"<< i + 1 << j + 1 << ": ";
+			cin >> firstMatrix[i][j];
+		}
+	}
+
+	cout << endl << "Enter elements of matrix 2:" << endl;
+	for(i = 0; i < rowSecond; ++i)
+	{
+		for(j = 0; j < columnSecond; ++j)
+		{
+			cout << "Enter elements b" << i + 1 << j + 1 << ": ";
+			cin >> secondMatrix[i][j];
+		}
+	}
+}
+
+void multiplyMatrices(int firstMatrix[][10], int secondMatrix[][10], int mult[][10], int rowFirst, int columnFirst, int rowSecond, int columnSecond)
+{
+	int i, j, k;
+
+	// Initializing elements of matrix mult to 0.
+	for(i = 0; i < rowFirst; ++i)
+	{
+		for(j = 0; j < columnSecond; ++j)
+		{
+			mult[i][j] = 0;
+		}
+	}
+
+	// Multiplying matrix firstMatrix and secondMatrix and storing in array mult.
+	for(i = 0; i < rowFirst; ++i)
+	{
+		for(j = 0; j < columnSecond; ++j)
+		{
+			for(k=0; k<columnFirst; ++k)
+			{
+				mult[i][j] += firstMatrix[i][k] * secondMatrix[k][j];
+			}
+		}
+	}
+}
+
+void display(int mult[][10], int rowFirst, int columnSecond)
+{
+	int i, j;
+
+	cout << "Output Matrix:" << endl;
+	for(i = 0; i < rowFirst; ++i)
+	{
+		for(j = 0; j < columnSecond; ++j)
+		{
+			cout << mult[i][j] << " ";
+			if(j == columnSecond - 1)
+				cout << endl << endl;
+		}
+	}
+}
+
+int level_1() {
+  string key;
+  cout << "Please enter the key to pass level 1: ";
+  getline(cin, key);
+
+  if (checkPassword(key)) {
+    cout << "Correct, you have passed level 1\n";
+  } else {
+    cout << "Incorrect.\n";
+    return -1;
+  }
+
+  return 0;
+}
+
+int level_2() {
+    // The password is hidden as an array of characters
+    char var1[] = {'\x71', '\x7a', '\x67', '\x6a', '\x78', '\x64', '\x6d', '\x76', '\x6b', '\x6f', '\x6a', '\x6d', '\x00'};
+
+    // Prompt the user to enter the password
+    cout << "Please enter the password for level 2: ";
+    string input;
+    cin >> input;
+
+    // Convert the user's input to a character array
+    char input_chars[input.length() + 1];
+    strcpy(input_chars, input.c_str());
+
+    // Check if the input matches the password
+    if (strcmp(input_chars, var1) == 0) {
+        cout << "Congratulations, you have passed level 2" << endl;
+    } else {
+        cout << "Incorrect. Maybe next time!" << endl;
+        return -1;
+    }
+
+    return 0;
+}
+
+int level_3() {
     // get input
     // string key = "The key is Urban Muller";
     string key;
-    cout << "input: ";
+    cout << "Enter the key for level 3: ";
     getline(cin,key);
     key += '\n';
 
@@ -215,14 +371,25 @@ void level_3() {
     v = v5;
     for(int i = 0; i < v.size(); i++) {
         if(v[i] != 0) {
-            cout << "You have failed " << v[i] << endl;
-            return;
+            cout << "Incorrect. So close" << v[i] << endl;
+            return -1;
         }
     }
     cout << "You won!!! Game Clear" << endl;
+
+    return 0;
 }
 
 
 int main() {
-    level_3();
+    cout << "Beat 3 levels to clear the game" << endl;
+    
+    if (level_1() == -1)
+        exit(0);
+    if(level_2() == -1)
+        exit(0);
+    if (level_3() == -1)
+        exit(0);
+
+    return 0;
 }

@@ -371,7 +371,7 @@ int level_3() {
     v = v5;
     for(int i = 0; i < v.size(); i++) {
         if(v[i] != 0) {
-            cout << "Incorrect. So close" << v[i] << endl;
+            cout << "Incorrect. So close" << endl;
             return -1;
         }
     }

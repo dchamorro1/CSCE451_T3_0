@@ -1,8 +1,12 @@
+all: bf.out a.out
+
 bf.out: brainfuck.c
-	g++ brainfuck.c -o bf.out
+	gcc brainfuck.c -o bf.out
 
 main.out: main.cpp
 	g++ main.cpp -o main.out
+
+a.out: main.out
 	strip -s main.out -o a.out
 
 codes.txt: bf.out

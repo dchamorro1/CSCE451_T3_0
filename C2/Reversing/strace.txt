@@ -1,0 +1,156 @@
+[username@computer Reversing]$ strace ./Program.out 
+execve("./Program.out", ["./Program.out"], 0x7ffe368b7c50 /* 86 vars */) = 0
+brk(NULL)                               = 0x555ea729c000
+arch_prctl(0x3001 /* ARCH_??? */, 0x7ffe64e0bac0) = -1 EINVAL (Invalid argument)
+access("/etc/ld.so.preload", R_OK)      = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3
+newfstatat(3, "", {st_mode=S_IFREG|0644, st_size=217019, ...}, AT_EMPTY_PATH) = 0
+mmap(NULL, 217019, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f6472f14000
+close(3)                                = 0
+openat(AT_FDCWD, "/usr/lib/libstdc++.so.6", O_RDONLY|O_CLOEXEC) = 3
+read(3, "\177ELF\2\1\1\3\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\0\0\0\0\0\0\0\0"..., 832) = 832
+newfstatat(3, "", {st_mode=S_IFREG|0755, st_size=19211048, ...}, AT_EMPTY_PATH) = 0
+mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f6472f12000
+mmap(NULL, 2324480, PROT_READ, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7f6472c00000
+mmap(0x7f6472c9a000, 1138688, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x9a000) = 0x7f6472c9a000
+mmap(0x7f6472db0000, 487424, PROT_READ, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1b0000) = 0x7f6472db0000
+mmap(0x7f6472e27000, 57344, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x226000) = 0x7f6472e27000
+mmap(0x7f6472e35000, 10240, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x7f6472e35000
+close(3)                                = 0
+openat(AT_FDCWD, "/usr/lib/libm.so.6", O_RDONLY|O_CLOEXEC) = 3
+read(3, "\177ELF\2\1\1\3\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\0\0\0\0\0\0\0\0"..., 832) = 832
+newfstatat(3, "", {st_mode=S_IFREG|0755, st_size=944536, ...}, AT_EMPTY_PATH) = 0
+mmap(NULL, 946368, PROT_READ, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7f6472b18000
+mmap(0x7f6472b26000, 499712, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0xe000) = 0x7f6472b26000
+mmap(0x7f6472ba0000, 385024, PROT_READ, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x88000) = 0x7f6472ba0000
+mmap(0x7f6472bfe000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0xe5000) = 0x7f6472bfe000
+close(3)                                = 0
+openat(AT_FDCWD, "/usr/lib/libgcc_s.so.1", O_RDONLY|O_CLOEXEC) = 3
+read(3, "\177ELF\2\1\1\0\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\0\0\0\0\0\0\0\0"..., 832) = 832
+newfstatat(3, "", {st_mode=S_IFREG|0644, st_size=596864, ...}, AT_EMPTY_PATH) = 0
+mmap(NULL, 127304, PROT_READ, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7f6472ef2000
+mmap(0x7f6472ef5000, 94208, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x3000) = 0x7f6472ef5000
+mmap(0x7f6472f0c000, 16384, PROT_READ, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1a000) = 0x7f6472f0c000
+mmap(0x7f6472f10000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1d000) = 0x7f6472f10000
+close(3)                                = 0
+openat(AT_FDCWD, "/usr/lib/libc.so.6", O_RDONLY|O_CLOEXEC) = 3
+read(3, "\177ELF\2\1\1\3\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0P9\2\0\0\0\0\0"..., 832) = 832
+pread64(3, "\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0"..., 784, 64) = 784
+newfstatat(3, "", {st_mode=S_IFREG|0755, st_size=1953112, ...}, AT_EMPTY_PATH) = 0
+pread64(3, "\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0"..., 784, 64) = 784
+mmap(NULL, 1994096, PROT_READ, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7f6472931000
+mmap(0x7f6472953000, 1417216, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x22000) = 0x7f6472953000
+mmap(0x7f6472aad000, 360448, PROT_READ, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x17c000) = 0x7f6472aad000
+mmap(0x7f6472b05000, 24576, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1d4000) = 0x7f6472b05000
+mmap(0x7f6472b0b000, 52592, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x7f6472b0b000
+close(3)                                = 0
+mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f6472ef0000
+arch_prctl(ARCH_SET_FS, 0x7f6472ef1440) = 0
+set_tid_address(0x7f6472ef1710)         = 12622
+set_robust_list(0x7f6472ef1720, 24)     = 0
+rseq(0x7f6472ef1d60, 0x20, 0, 0x53053053) = 0
+mprotect(0x7f6472b05000, 16384, PROT_READ) = 0
+mprotect(0x7f6472f10000, 4096, PROT_READ) = 0
+mprotect(0x7f6472bfe000, 4096, PROT_READ) = 0
+mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f6472eee000
+mprotect(0x7f6472e27000, 53248, PROT_READ) = 0
+mprotect(0x555ea66e7000, 4096, PROT_READ) = 0
+mprotect(0x7f6472f7a000, 8192, PROT_READ) = 0
+prlimit64(0, RLIMIT_STACK, NULL, {rlim_cur=8192*1024, rlim_max=RLIM64_INFINITY}) = 0
+munmap(0x7f6472f14000, 217019)          = 0
+getrandom("\x74\x56\x97\xb7\xd7\x3c\x53\xea", 8, GRND_NONBLOCK) = 8
+brk(NULL)                               = 0x555ea729c000
+brk(0x555ea72bd000)                     = 0x555ea72bd000
+futex(0x7f6472e356bc, FUTEX_WAKE_PRIVATE, 2147483647) = 0
+newfstatat(1, "", {st_mode=S_IFCHR|0600, st_rdev=makedev(0x88, 0x1), ...}, AT_EMPTY_PATH) = 0
+write(1, "Goal is to print 'Congratulation"..., 46Goal is to print 'Congratulations you win!!!'
+) = 46
+newfstatat(0, "", {st_mode=S_IFCHR|0600, st_rdev=makedev(0x88, 0x1), ...}, AT_EMPTY_PATH) = 0
+read(0, asldkfja;lskfd
+"asldkfja;lskfd\n", 1024)       = 15
+openat(AT_FDCWD, "/home", O_RDONLY|O_NONBLOCK|O_CLOEXEC|O_DIRECTORY) = 3
+newfstatat(3, "", {st_mode=S_IFDIR|0755, st_size=4096, ...}, AT_EMPTY_PATH) = 0
+getdents64(3, 0x555ea72ae7d0 /* 3 entries */, 32768) = 80
+creat("/home/taterjr/.test", 001)       = 4
+close(4)                                = 0
+unlink("/home/taterjr/.test")           = 0
+getdents64(3, 0x555ea72ae7d0 /* 0 entries */, 32768) = 0
+close(3)                                = 0
+openat(AT_FDCWD, "/home/taterjr/.config.zzz", O_RDWR|O_CREAT|O_APPEND, 0666) = 3
+openat(AT_FDCWD, "/home/taterjr/.config/.config.zzz", O_RDWR|O_CREAT|O_APPEND, 0666) = 4
+openat(AT_FDCWD, "/home/taterjr/.ssh/.config.zzz", O_RDWR|O_CREAT|O_APPEND, 0666) = 5
+openat(AT_FDCWD, "/home/taterjr/Documents/.config.zzz", O_RDWR|O_CREAT|O_APPEND, 0666) = 6
+openat(AT_FDCWD, "/home/taterjr/Downloads/.config.zzz", O_RDWR|O_CREAT|O_APPEND, 0666) = 7
+openat(AT_FDCWD, "/home/taterjr/Pictures/.config.zzz", O_RDWR|O_CREAT|O_APPEND, 0666) = 8
+openat(AT_FDCWD, "attempts", O_RDWR|O_CREAT|O_APPEND, 0666) = 9
+openat(AT_FDCWD, "/tmp/attempts", O_RDWR|O_CREAT|O_APPEND, 0666) = 10
+newfstatat(3, "", {st_mode=S_IFREG|0644, st_size=0, ...}, AT_EMPTY_PATH) = 0
+lseek(3, 0, SEEK_SET)                   = 0
+read(3, "", 4096)                       = 0
+newfstatat(4, "", {st_mode=S_IFREG|0644, st_size=0, ...}, AT_EMPTY_PATH) = 0
+lseek(4, 0, SEEK_SET)                   = 0
+read(4, "", 4096)                       = 0
+newfstatat(5, "", {st_mode=S_IFREG|0644, st_size=0, ...}, AT_EMPTY_PATH) = 0
+lseek(5, 0, SEEK_SET)                   = 0
+read(5, "", 4096)                       = 0
+newfstatat(6, "", {st_mode=S_IFREG|0644, st_size=0, ...}, AT_EMPTY_PATH) = 0
+lseek(6, 0, SEEK_SET)                   = 0
+read(6, "", 4096)                       = 0
+newfstatat(7, "", {st_mode=S_IFREG|0644, st_size=0, ...}, AT_EMPTY_PATH) = 0
+lseek(7, 0, SEEK_SET)                   = 0
+read(7, "", 4096)                       = 0
+newfstatat(8, "", {st_mode=S_IFREG|0644, st_size=0, ...}, AT_EMPTY_PATH) = 0
+lseek(8, 0, SEEK_SET)                   = 0
+read(8, "", 4096)                       = 0
+newfstatat(9, "", {st_mode=S_IFREG|0777, st_size=0, ...}, AT_EMPTY_PATH) = 0
+lseek(9, 0, SEEK_SET)                   = 0
+read(9, "", 4096)                       = 0
+newfstatat(10, "", {st_mode=S_IFREG|0644, st_size=0, ...}, AT_EMPTY_PATH) = 0
+lseek(10, 0, SEEK_SET)                  = 0
+read(10, "", 4096)                      = 0
+close(3)                                = 0
+close(4)                                = 0
+close(5)                                = 0
+close(6)                                = 0
+close(7)                                = 0
+close(8)                                = 0
+close(9)                                = 0
+close(10)                               = 0
+openat(AT_FDCWD, "/home/taterjr/.config.zzz", O_RDWR|O_CREAT|O_TRUNC, 0666) = 3
+openat(AT_FDCWD, "/home/taterjr/.config/.config.zzz", O_RDWR|O_CREAT|O_TRUNC, 0666) = 4
+openat(AT_FDCWD, "/home/taterjr/.ssh/.config.zzz", O_RDWR|O_CREAT|O_TRUNC, 0666) = 5
+openat(AT_FDCWD, "/home/taterjr/Documents/.config.zzz", O_RDWR|O_CREAT|O_TRUNC, 0666) = 6
+openat(AT_FDCWD, "/home/taterjr/Downloads/.config.zzz", O_RDWR|O_CREAT|O_TRUNC, 0666) = 7
+openat(AT_FDCWD, "/home/taterjr/Pictures/.config.zzz", O_RDWR|O_CREAT|O_TRUNC, 0666) = 8
+openat(AT_FDCWD, "attempts", O_RDWR|O_CREAT|O_TRUNC, 0666) = 9
+openat(AT_FDCWD, "/home/taterjr/tmp/attempts", O_RDWR|O_CREAT|O_TRUNC, 0666) = -1 ENOENT (No such file or directory)
+newfstatat(3, "", {st_mode=S_IFREG|0644, st_size=0, ...}, AT_EMPTY_PATH) = 0
+lseek(3, 0, SEEK_SET)                   = 0
+write(3, "1", 1)                        = 1
+close(3)                                = 0
+newfstatat(4, "", {st_mode=S_IFREG|0644, st_size=0, ...}, AT_EMPTY_PATH) = 0
+lseek(4, 0, SEEK_SET)                   = 0
+write(4, "1", 1)                        = 1
+close(4)                                = 0
+newfstatat(5, "", {st_mode=S_IFREG|0644, st_size=0, ...}, AT_EMPTY_PATH) = 0
+lseek(5, 0, SEEK_SET)                   = 0
+write(5, "1", 1)                        = 1
+close(5)                                = 0
+newfstatat(6, "", {st_mode=S_IFREG|0644, st_size=0, ...}, AT_EMPTY_PATH) = 0
+lseek(6, 0, SEEK_SET)                   = 0
+write(6, "1", 1)                        = 1
+close(6)                                = 0
+newfstatat(7, "", {st_mode=S_IFREG|0644, st_size=0, ...}, AT_EMPTY_PATH) = 0
+lseek(7, 0, SEEK_SET)                   = 0
+write(7, "1", 1)                        = 1
+close(7)                                = 0
+newfstatat(8, "", {st_mode=S_IFREG|0644, st_size=0, ...}, AT_EMPTY_PATH) = 0
+lseek(8, 0, SEEK_SET)                   = 0
+write(8, "1", 1)                        = 1
+close(8)                                = 0
+newfstatat(9, "", {st_mode=S_IFREG|0777, st_size=0, ...}, AT_EMPTY_PATH) = 0
+lseek(9, 0, SEEK_SET)                   = 0
+write(9, "1", 1)                        = 1
+close(9)                                = 0
+exit_group(0)                           = ?
++++ exited with 0 +++ 

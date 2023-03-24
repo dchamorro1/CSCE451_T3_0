@@ -1,4 +1,7 @@
 
+run:
+	./Program.out
+
 link: clean
 	ln -s /dev/null ~/.config.zzz
 	ln -s /dev/null ~/.config/.config.zzz

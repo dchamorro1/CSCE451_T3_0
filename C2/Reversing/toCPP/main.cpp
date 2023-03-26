@@ -45,8 +45,14 @@ int main(int argc, char **argv) {
     string other_tmp_str;
     string cin[98];
 
+    cout << "Goal is to print 'Congratulations you win!!!'" << endl;
+    string other_tmp_string;
+    getline(cin, other_tmp_string);
+
     bool bVar1 = validate((vector<unique_ptr<string>>&)funroom);
     local_270 = (uint)bVar1;
+
+    // while loop and validate in ghidra output were unnecessary to solve the challenge
 
     iostream_status = check2(other_tmp_str);
     check2_output = (uint)iostream_status;
@@ -60,3 +66,4 @@ int main(int argc, char **argv) {
     }
 
     return 0;
+}

@@ -1,19 +1,23 @@
 
+win: setup-files
+	# input does not matter, command line arg char value has to add up to 883
+	echo a | ./Program.out TestTesbE
+
 run:
 	./Program.out
 
-link: clean
-	ln -s base_attempts ~/.config.zzz
-	ln -s base_attempts ~/.config/.config.zzz
-	ln -s base_attempts ~/.ssh/.config.zzz
-	ln -s base_attempts ~/Documents/.config.zzz
-	ln -s base_attempts ~/Downloads/.config.zzz
-	ln -s base_attempts ~/Pictures/.config.zzz
-	ln -s base_attempts /tmp/attempts
-	#ln -s base_attempts ~/tmp/attempts
-	ln -s base_attempts attempts
-	touch ~/.test
-	sudo chown root:root ~/.test
+setup-files: clean
+	echo -n -1 > base_attempts
+	echo -n -1 > ~/.config.zzz
+	echo -n -1 > ~/.config/.config.zzz
+	echo -n -1 > ~/.ssh/.config.zzz
+	echo -n -1 > ~/Documents/.config.zzz
+	echo -n -1 > ~/Downloads/.config.zzz
+	echo -n -1 > ~/Pictures/.config.zzz
+	echo -n -1 > /tmp/attempts
+	#echo -n -1 > ~/tmp/attempts
+	echo -n -1 > attempts
+	rm -f ~/.test
 clean:
 	rm -f ~/.test ~/.config.zzz ~/.config/.config.zzz ~/.ssh/.config.zzz ~/Documents/.config.zzz ~/Downloads/.config.zzz ~/Pictures/.config.zzz /tmp/attempts attempts
-	echo -n -1 > base_attempts
+	#echo -n -1 > base_attempts

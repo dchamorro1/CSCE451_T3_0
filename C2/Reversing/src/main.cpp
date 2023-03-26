@@ -179,18 +179,19 @@ int main(int argc, char **argv) {
     string other_tmp_string;
     getline(cin, other_tmp_string);
 
-    bool bVar1 = validate((vector<unique_ptr<string>>&)funroom);
-    local_270 = (uint)bVar1;
 
     // while loop and validate in ghidra output were unnecessary to solve the challenge
+
+    bool bVar1 = validate((vector<unique_ptr<string>>&)funroom);
+    local_270 = (uint)bVar1;
 
     iostream_status = check2(other_tmp_str);
     check2_output = (uint)iostream_status;
 
     if (argc > 1) {
-        other_tmp_str = argv[1];
-        other_tmp_str += "win!";
-        int iVar2 = KalmanFilter(other_tmp_str);
+        string false_win = argv[1];
+        false_win += "win!";
+        int iVar2 = KalmanFilter(argv[1]);
         iVar2 = skynet.NeuralNetwork(check2_output, check2_output, iVar2);
         Goal(iVar2 != 0);
     }

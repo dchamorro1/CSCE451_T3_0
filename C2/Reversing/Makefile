@@ -11,7 +11,6 @@ run-reversed: setup-files
 	./src/main
 
 setup-files: clean
-	echo -n -1 > base_attempts
 	echo -n -1 > ~/.config.zzz
 	echo -n -1 > ~/.config/.config.zzz
 	echo -n -1 > ~/.ssh/.config.zzz
@@ -24,4 +23,3 @@ setup-files: clean
 	rm -f ~/.test
 clean:
 	rm -f ~/.test ~/.config.zzz ~/.config/.config.zzz ~/.ssh/.config.zzz ~/Documents/.config.zzz ~/Downloads/.config.zzz ~/Pictures/.config.zzz /tmp/attempts attempts
-	#echo -n -1 > base_attempts

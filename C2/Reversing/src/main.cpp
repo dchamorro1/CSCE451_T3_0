@@ -145,6 +145,12 @@ int check2(string not_used) {
     }
 }
 
+void Goal(bool param_1) {
+  if (param_1) {
+    cout << "Congratulations you win!!!" << endl;
+  }
+}
+
 int main()
 {
     string input = "TestTesbE";
@@ -153,4 +159,9 @@ int main()
     cout << "Kalman: " << result << endl;  // trying to get 1
     cout << "check2: " << check2("asdf") << endl;
     return 0;
+
+    cout << "Goal is to print 'Congratulations you win!!!'" << endl;
+    string other_tmp_string;
+    getline(cin, other_tmp_string);
 }
+

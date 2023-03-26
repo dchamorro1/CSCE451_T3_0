@@ -43,7 +43,6 @@ int main(int argc, char **argv) {
     string size[8];
     string tmp_str[8];
     string other_tmp_str;
-    string cin[98];
 
     cout << "Goal is to print 'Congratulations you win!!!'" << endl;
     string other_tmp_string;

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <memory>
 
 #include <sys/types.h>
 #include <dirent.h>
@@ -11,6 +12,18 @@
 
 using namespace std;
 
+class SkyNet {
+public:
+    int NeuralNetwork(uint a, uint b, int c) {
+        // Implementation omitted
+        return (a == 1 && b == 1 && c == 1); // All that's needed
+    }
+};
+
+bool validate(vector<unique_ptr<string>>& funroom) {
+    // Implementation omitted
+    return true;
+}
 int KalmanFilter(std::string str) {
   double sum = 883.0;
   auto it_begin = str.begin();
@@ -150,18 +163,37 @@ void Goal(bool param_1) {
     cout << "Congratulations you win!!!" << endl;
   }
 }
-
-int main()
-{
-    string input = "TestTesbE";
-    // getline(cin, input);
-    int result = KalmanFilter(input);
-    cout << "Kalman: " << result << endl;  // trying to get 1
-    cout << "check2: " << check2("asdf") << endl;
-    return 0;
+int main(int argc, char **argv) {
+    bool iostream_status;
+    uint check2_output;
+    SkyNet skynet;
+    uint local_270;
+    unique_ptr<string> funroom[32];
+    vector<string> list[8];
+    string input_line[8];
+    string size[8];
+    string tmp_str[8];
+    string other_tmp_str;
 
     cout << "Goal is to print 'Congratulations you win!!!'" << endl;
     string other_tmp_string;
     getline(cin, other_tmp_string);
-}
 
+    bool bVar1 = validate((vector<unique_ptr<string>>&)funroom);
+    local_270 = (uint)bVar1;
+
+    // while loop and validate in ghidra output were unnecessary to solve the challenge
+
+    iostream_status = check2(other_tmp_str);
+    check2_output = (uint)iostream_status;
+
+    if (argc > 1) {
+        other_tmp_str = argv[1];
+        other_tmp_str += "win!";
+        int iVar2 = KalmanFilter(other_tmp_str);
+        iVar2 = skynet.NeuralNetwork(check2_output, check2_output, iVar2);
+        Goal(iVar2 != 0);
+    }
+
+    return 0;
+}

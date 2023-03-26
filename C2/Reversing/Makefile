@@ -6,6 +6,10 @@ win: setup-files
 run:
 	./Program.out
 
+run-reversed: setup-files
+	cd ./src && make main
+	./src/main
+
 setup-files: clean
 	echo -n -1 > base_attempts
 	echo -n -1 > ~/.config.zzz

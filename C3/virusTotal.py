@@ -5,13 +5,12 @@
 #@toolbar
 # Running binary through VirusTotal
 
-# import requests
-
 #TODO Add User Code Here
 
 import requests
 import os
-from ghidra.framework import Project
+import ghidra.app.util.bin.exporter.ExporterException as ExporterException
+import ghidra.app.util.bin.exporter.RawExporter as RawExporter
 
 # url = "https://www.virustotal.com/api/v3/files"
 #
@@ -30,36 +29,26 @@ def main():
 
     # TODO: get file with ghidra function
 
-    # specify the name of the project and program
-    project_name = "MyProject"
-    program_name = "MyProgram"
+    # Get the program currently loaded in Ghidra
+    program = getCurrentProgram()
 
-    # get the project and program objects
-    project_mgr = Project.getProjects()
-    project = None
-    for p in project_mgr:
-        if p.getName() == project_name:
-            project = p
-            break
+    # Define the output file path
+    out_file_path = os.path.join(str(program.getExecutablePath()), program.getName() + ".out")
 
-    if project is None:
-        print(f"Could not find project {project_name}")
-        exit()
+    # Create a new raw exporter instance
+    exporter = RawExporter()
 
-    program = project.getProgram(program_name)
-    if program is None:
-        print(f"Could not find program {program_name}")
-        exit()
-
-    # extract the .out file
-    out_path = os.path.join(os.path.dirname(program.getExecutablePath()), program.getName() + ".out")
-    with open(out_path, "wb") as f:
-    f.write(program.getMemory().getBytes())
+    try:
+    # Export the program to the output file path
+        exporter.export(program, out_file_path, monitor)
+        print("Exported program to: " + out_file_path)
+    except ExporterException as e:
+        print("Error exporting program: " + str(e))
 
     # TODO: Feeding file into virustotal
     url = "https://www.virustotal.com/api/v3/files"
 
-    files = {"file": (out_path, open(out_path, "rb"), "application/octet-stream")}
+    files = {"file": (out_file_path, open(out_file_path, "rb"), "application/octet-stream")}
 
     headers = {
         "accept": "application/json",

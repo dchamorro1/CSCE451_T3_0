@@ -52,7 +52,12 @@ def main():
 
     response = requests.get(analysis_url, headers=headers)
 
+    print("----Getting response from analysis_url----")
     print(response.text)
+
+    print("--- Getting data.links.sels---")
+    response = requests.get(response.json()["data"]["links"]["self"], headers=headers)
+    # print(response.text)
 
 
 if __name__ == "__main__":

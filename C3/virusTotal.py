@@ -1,14 +1,9 @@
-#TODO write a description for this script
 #@author
 #@category Memory
 #@keybinding
 #@menupath Tools.Virus Total
 #@toolbar
 # Running binary through VirusTotal
-
-
-
-
 
 import requests
 

@@ -6,12 +6,14 @@
 #@toolbar
 # Running binary through VirusTotal
 
-import requests
+# import requests
 
 
 #TODO Add User Code Here
 
 import requests
+import os
+from ghidra.framework import Project
 
 # url = "https://www.virustotal.com/api/v3/files"
 #
@@ -30,12 +32,36 @@ def main():
 
     # TODO: get file with ghidra function
 
+    # specify the name of the project and program
+    project_name = "MyProject"
+    program_name = "MyProgram"
 
+    # get the project and program objects
+    project_mgr = Project.getProjects()
+    project = None
+    for p in project_mgr:
+        if p.getName() == project_name:
+            project = p
+            break
+
+    if project is None:
+        print(f"Could not find project {project_name}")
+        exit()
+
+    program = project.getProgram(program_name)
+    if program is None:
+        print(f"Could not find program {program_name}")
+        exit()
+
+    # extract the .out file
+    out_path = os.path.join(os.path.dirname(program.getExecutablePath()), program.getName() + ".out")
+    with open(out_path, "wb") as f:
+    f.write(program.getMemory().getBytes())
 
     # TODO: Feeding file into virustotal
     url = "https://www.virustotal.com/api/v3/files"
 
-    files = {"file": ("wordle.out", open("wordle.out", "rb"), "application/octet-stream")}
+    files = {"file": (out_path, open(out_path, "rb"), "application/octet-stream")}
 
     headers = {
         "accept": "application/json",

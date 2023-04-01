@@ -1,4 +1,3 @@
-#TODO write a description for this script
 #@author
 #@category Memory
 #@keybinding
@@ -31,6 +30,32 @@ def main():
 
     # TODO: get file with ghidra function
 
+    # specify the name of the project and program
+    project_name = "MyProject"
+    program_name = "MyProgram"
+
+    # get the project and program objects
+    project_mgr = Project.getProjects()
+    project = None
+    for p in project_mgr:
+        if p.getName() == project_name:
+            project = p
+            break
+
+    if project is None:
+        print(f"Could not find project {project_name}")
+        exit()
+
+    program = project.getProgram(program_name)
+    if program is None:
+        print(f"Could not find program {program_name}")
+        exit()
+
+    # extract the .out file
+    out_path = os.path.join(os.path.dirname(program.getExecutablePath()), program.getName() + ".out")
+    with open(out_path, "wb") as f:
+    f.write(program.getMemory().getBytes())
+
     # TODO: Feeding file into virustotal
     url = "https://www.virustotal.com/api/v3/files"
 
@@ -51,7 +76,12 @@ def main():
 
     response = requests.get(analysis_url, headers=headers)
 
+    print("----Getting response from analysis_url----")
     print(response.text)
+
+    # print("--- Getting data.links.sels---")
+    # response = requests.get(response.json()["data"]["links"]["self"], headers=headers)
+    # print(response.text)
 
 
 if __name__ == "__main__":

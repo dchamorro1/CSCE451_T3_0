@@ -7,27 +7,27 @@
 
 import requests
 import os
-from ghidra.framework import Project
+# from ghidra.framework import Project
 
 def main():
     print("Starting Script")
 
     # TODO: get file with ghidra function
 
-    program = getCurrentProgram()
-
-    # Define the output file path
-    out_file_path = os.path.join(str(program.getExecutablePath()), program.getName() + ".out")
-
-    # Create a new raw exporter instance
-    exporter = RawExporter()
-
-    try:
-        # Export the program to the output file path
-        exporter.export(program, out_file_path, monitor)
-        print("Exported program to: " + out_file_path)
-    except ExporterException as e:
-        print("Error exporting program: " + str(e))
+    # program = getCurrentProgram()
+    #
+    # # Define the output file path
+    # out_file_path = os.path.join(str(program.getExecutablePath()), program.getName() + ".out")
+    #
+    # # Create a new raw exporter instance
+    # exporter = RawExporter()
+    #
+    # try:
+    #     # Export the program to the output file path
+    #     exporter.export(program, out_file_path, monitor)
+    #     print("Exported program to: " + out_file_path)
+    # except ExporterException as e:
+    #     print("Error exporting program: " + str(e))
 
 
 

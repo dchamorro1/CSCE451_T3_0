@@ -5,7 +5,8 @@
 # @toolbar
 # Running binary through VirusTotal
 
-import urllib
+# import urllib
+# import urllib.request
 import urllib2
 
 
@@ -28,7 +29,7 @@ def main():
     }
 
     # requests = urllib2(Request(url))
-    requests = urllib.request.urlopen(url)
+    requests = urllib2.urlopen(url)
 
     # data = urllib.urlencode(headers)
 

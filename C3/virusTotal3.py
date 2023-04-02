@@ -45,7 +45,7 @@ def main():
     print(response.text)
 
 
-    ###########################################################
+    ### Changing the above code to use urllib/urllib2 ###########################################################
 
     requests = urllib2(Request(url))
 

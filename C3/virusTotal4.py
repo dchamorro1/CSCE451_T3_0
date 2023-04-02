@@ -28,19 +28,19 @@ def main():
         "x-apikey": "6a90acebb6999746d1649a244d982d162cf87488440afc942d46a99abe4ee98a"
     }
 
-    # requests = urllib2(Request(url))
-    req = urllib2.Request(url)
-    requests = urllib2.urlopen(req)
+    opener = urllib2.build_opener(urllib2.HTTPHandler())
 
-    # data = urllib.urlencode(headers)
+    # Create a request object with POST method and data
+    request = urllib2.Request(url, data=files)
+    request.get_method = lambda: 'POST'
 
-    requests.add_header("accept", "application/json")
-    requests.add_header("x-apikey", "6a90acebb6999746d1649a244d982d162cf87488440afc942d46a99abe4ee98a")
+    request.add_header("accept", "application/json")
+    request.add_header("x-apikey", "6a90acebb6999746d1649a244d982d162cf87488440afc942d46a99abe4ee98a")
 
-    requests.add_data(files)
+    # Send the request and get the response
+    response = opener.open(request)
 
-    html = requests.read()
-    print(html)
+    print(response.read())
 
 
 if __name__ == "__main__":

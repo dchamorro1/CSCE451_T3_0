@@ -47,6 +47,17 @@ def main():
 
     ### Changing the above code to use urllib/urllib2 ###########################################################
 
+    url = "https://www.virustotal.com/api/v3/files"
+
+    files = {"file": (out_file_path, open(out_file_path, "rb"), "application/octet-stream")}
+
+    headers = {
+        "accept": "application/json",
+        "x-apikey": "6a90acebb6999746d1649a244d982d162cf87488440afc942d46a99abe4ee98a"
+    }
+
+
+
     requests = urllib2(Request(url))
 
     # data = urllib.urlencode(headers)

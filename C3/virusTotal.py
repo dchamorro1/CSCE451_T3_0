@@ -15,10 +15,12 @@ import sys
 import hashlib
 import time
 
-from javax.swing import JFrame, JButton, JPanel
+from javax.swing import JFrame, JButton, JPanel, SwingUtilities
 
+chosen_option = None
 
 class MyGUI:
+    global chosen_option
     def __init__(self):
         self.frame = JFrame("Choose an Option")
         self.frame.setSize(300, 100)
@@ -37,9 +39,15 @@ class MyGUI:
 
     def malware_detector(self, event):
         print("You clicked the Malware Detector button.")
+        chosen_option = "malware"
+        SwingUtilities.getWindowAncestor(event.getSource()).dispose()
+
 
     def string_extractor(self, event):
         print("You clicked the String Extractor button.")
+        chosen_option = "string_extractor"
+        SwingUtilities.getWindowAncestor(event.getSource()).dispose()
+
 
 key =  '6a90acebb6999746d1649a244d982d162cf87488440afc942d46a99abe4ee98a'
 url = "https://www.virustotal.com/api/v3/"
@@ -75,10 +83,8 @@ def main():
 
     gui = MyGUI()
 
-    # can't take inputs on ghidra from console
-
-    # Taking user decision by using ghidra api
-
+    global chosen_option
+    # TODO: If chosen_option is "malware" then run malware detector, if it is "string_extractor" then run string extractor
 
     state = getState()
     currentProgram = state.getCurrentProgram()
@@ -128,7 +134,7 @@ def main():
     print('Display output')
     print(json.dumps(result, indent=4, sort_keys=True))
 
-    # TODO: do stuff with output
+    # TODO: Make output json more readable
 
 
 if __name__ == "__main__":

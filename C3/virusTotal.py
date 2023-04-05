@@ -15,6 +15,32 @@ import sys
 import hashlib
 import time
 
+from javax.swing import JFrame, JButton, JPanel
+
+
+class MyGUI:
+    def __init__(self):
+        self.frame = JFrame("Choose an Option")
+        self.frame.setSize(300, 100)
+        self.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
+
+        panel = JPanel()
+
+        malware_button = JButton("Malware Detector", actionPerformed=self.malware_detector)
+        panel.add(malware_button)
+
+        string_button = JButton("String Extractor", actionPerformed=self.string_extractor)
+        panel.add(string_button)
+
+        self.frame.add(panel)
+        self.frame.setVisible(True)
+
+    def malware_detector(self, event):
+        print("You clicked the Malware Detector button.")
+
+    def string_extractor(self, event):
+        print("You clicked the String Extractor button.")
+
 key =  '6a90acebb6999746d1649a244d982d162cf87488440afc942d46a99abe4ee98a'
 url = "https://www.virustotal.com/api/v3/"
 def get_results(scan_url):
@@ -46,6 +72,13 @@ def submit_file(name, location): # location includes name
     
 def main():
     print("Starting Script")
+
+    gui = MyGUI()
+
+    # can't take inputs on ghidra from console
+
+    # Taking user decision by using ghidra api
+
 
     state = getState()
     currentProgram = state.getCurrentProgram()

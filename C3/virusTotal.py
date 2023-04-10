@@ -5,8 +5,6 @@
 # @toolbar
 # Running binary through VirusTotal
 
-#TODO Add User Code Here
-import urllib2
 import os
 import subprocess
 import shutil
@@ -96,13 +94,8 @@ def main():
     latch = CountDownLatch(1)
 
     gui = MyGUI()
-    # if chosen_option != None:
-    #     latch.await()
 
     while chosen_option != "malware" and chosen_option != "string_extractor":
-        # if chosen_option == "malware" or chosen_option == "string_extractor":
-        #     latch.countDown()
-        # print("waiting for user input")
         pass
 
 

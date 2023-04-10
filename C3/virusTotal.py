@@ -17,11 +17,15 @@ import time
 
 from javax.swing import JFrame, JButton, JPanel, SwingUtilities
 
+from java.util.concurrent import CountDownLatch
+
+
 chosen_option = None
 
 class MyGUI:
     global chosen_option
     def __init__(self):
+
         self.frame = JFrame("Choose an Option")
         self.frame.setSize(300, 100)
         self.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
@@ -37,16 +41,22 @@ class MyGUI:
         self.frame.add(panel)
         self.frame.setVisible(True)
 
+# TODO: FIx bugs
+
     def malware_detector(self, event):
+        global chosen_option
         print("You clicked the Malware Detector button.")
         chosen_option = "malware"
         SwingUtilities.getWindowAncestor(event.getSource()).dispose()
+        # self.latch.countDown()
 
 
     def string_extractor(self, event):
+        global chosen_option
         print("You clicked the String Extractor button.")
         chosen_option = "string_extractor"
         SwingUtilities.getWindowAncestor(event.getSource()).dispose()
+
 
 
 key =  '6a90acebb6999746d1649a244d982d162cf87488440afc942d46a99abe4ee98a'
@@ -81,9 +91,21 @@ def submit_file(name, location): # location includes name
 def main():
     print("Starting Script")
 
-    gui = MyGUI()
-
     global chosen_option
+
+    latch = CountDownLatch(1)
+
+    gui = MyGUI()
+    # if chosen_option != None:
+    #     latch.await()
+
+    while chosen_option != "malware" and chosen_option != "string_extractor":
+        # if chosen_option == "malware" or chosen_option == "string_extractor":
+        #     latch.countDown()
+        # print("waiting for user input")
+        pass
+
+
     # TODO: If chosen_option is "malware" then run malware detector, if it is "string_extractor" then run string extractor
 
     state = getState()
@@ -101,40 +123,47 @@ def main():
     # hash_sha = h.hexdigest()
     # print(hash_sha)
 
-    # Try hash
-    result = get_results(url + 'files/' + hash_sha)
-    # Upload file if that doesn't work
-    if('error' in result):
-        print('File not found')
-        print('Prompt to upload file?')
-        # Submit the file
-        scan_result = submit_file(name,location)
-        print(json.dumps(scan_result, indent=4, sort_keys=True))
-
-        # Actual data
-        scan_url = scan_result['data']['links']['self']
-        result = None
-
-        # Takes time to process
-        # try multiple times with exp backoff
-        for i in range(6): # upto 2^6 or 64 seconds wait
-            result = get_results(scan_url)
-            if(result['data']['attributes']['status'] == 'completed'):
-                break
-            print("trying again", result['data']['attributes']['status'])
-            time.sleep(2**i) # exponential back-off 2, 4, 8, 16 sec
-        if result == None:
-            print('Could not upload file please try again')
-            return -1
-
-        # file and hash results are different but contain the same information
-        # get hash result
+    if chosen_option == "malware":
+        print("Executing malware code")
+        # Try hash
         result = get_results(url + 'files/' + hash_sha)
+        # Upload file if that doesn't work
+        if('error' in result):
+            print('File not found')
+            print('Prompt to upload file?')
+            # Submit the file
+            scan_result = submit_file(name,location)
+            print(json.dumps(scan_result, indent=4, sort_keys=True))
 
-    print('Display output')
-    print(json.dumps(result, indent=4, sort_keys=True))
+            # Actual data
+            scan_url = scan_result['data']['links']['self']
+            result = None
 
-    # TODO: Make output json more readable
+            # Takes time to process
+            # try multiple times with exp backoff
+            for i in range(6): # upto 2^6 or 64 seconds wait
+                result = get_results(scan_url)
+                if(result['data']['attributes']['status'] == 'completed'):
+                    break
+                print("trying again", result['data']['attributes']['status'])
+                time.sleep(2**i) # exponential back-off 2, 4, 8, 16 sec
+            if result == None:
+                print('Could not upload file please try again')
+                return -1
+
+            # file and hash results are different but contain the same information
+            # get hash result
+            result = get_results(url + 'files/' + hash_sha)
+
+        print('Display output')
+        print(json.dumps(result, indent=4, sort_keys=True))
+
+        # TODO: Make output json more readable
+
+    if chosen_option == "string_extractor":
+        # TODO: Code for string extractor starts HERE vvv
+        print("Executing string extractor code")
+        pass
 
 
 if __name__ == "__main__":

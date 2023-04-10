@@ -6,7 +6,6 @@
 # Running binary through VirusTotal
 
 import os
-import re
 import subprocess
 import shutil
 import json
@@ -21,7 +20,7 @@ from java.util.concurrent import CountDownLatch
 from ghidra.app.decompiler import DecompileOptions, DecompInterface
 from ghidra.program.model.symbol import SymbolUtilities
 
-from ghidra.app.decompiler import DecompileResults
+from ghidra.program.model.address import Address, AddressFactory
 
 chosen_option = None
 
@@ -69,7 +68,7 @@ def get_results(scan_url):
         --url {url} \
         --header 'accept: application/json' \
         --header 'x-apikey: {key}'".format(**{'url': scan_url, 'key': key})
-
+    
     print(command2)
     result = subprocess.check_output(command2,shell=True)
     print(result)
@@ -97,52 +96,43 @@ def extract_string_literals():
     decomp_interface.openProgram(currentProgram)
     options = DecompileOptions()
 
-    # Get all functions in the binary
+    # # currentAddress = currentProgram.getMemory().getMinAddress()
+    #
+    # # currentAddress = "0x0011033d"
+    # # print("current address: ", currentAddress)
+    # current_location = currentProgram.getListing().getLocation(currentProgram.getCursorPosition())
+    #
+    # print("current location: ", current_location)
+    # current_address = current_location.getAddress()
+    #
+    # # Get the current function
+    # function = getFunctionContaining(current_address)
+    # print("current function: ", function.getName())
+
+    #################
+
     functions = currentProgram.getFunctionManager().getFunctions(True)
 
-    matches = []
+    for function in functions:
+        # Decompile the function
+        results = decomp_interface.decompileFunction(function, 60, monitor)
+        if results is None:
+            print("Failed to decompile function")
 
-    # Iterate over all functions and extract string literals
-    with open('string_literals.txt', 'w') as f:
-        for function in functions:
-            try:
-                # Decompile the function
-                results = decomp_interface.decompileFunction(function, 60, monitor)
-                if results is None:
-                    continue
+        # Get the PcodeOps for the function
+        ops = results.getHighFunction().getPcodeOps()
 
-                # Extract string literals from the decompiled code
-                markup = results.getCCodeMarkup()
-                if markup:
-                    # print("\n\n\n")
-                    # print(markup)
-
-                    # printing type of the variable markup
-                    # print("type of variable markup: ", type(markup))
-
-                    # if the markup contains an item within "" or within '', print the string literal
-
-                    markup = str(markup)
-
-                    # TODO: CHECKT THE FOLLOWING REGEX EXPRESSION TO MAKE SURE THAT ITS CAPTURING CORRECTLY
-                    string_regex = re.compile(r"['\"](.*?)['\"]")
-                    # print the name of the function were currently checking for string literals
-                    print("Function name: ", function.getName())
-                    # print the string literals found in the function
-                    print("Found the following string: ", re.findall(string_regex, markup))
-
-
-
-
-                    print("\n\n")
-
-
-            except Exception as e:
-                print(e)
-
-    # Clean up the decompiler interface
+        # Iterate over the PcodeOps and extract the tokens
+        with open('string_literals.txt', 'w') as f:
+            for op in ops:
+                print("op: ", op)
+                tokens = op.getOutput().getHigh().getTokens()
+                for token in tokens:
+                    if token.type == TokenType.STRING:
+                        f.write(token.getText() + '\n')
+        # Clean up the decompiler interface
     decomp_interface.dispose()
-
+    
 def main():
     print("Starting Script")
 
@@ -164,7 +154,7 @@ def main():
     location = currentProgram.getExecutablePath()
     hash_sha = currentProgram.getExecutableSHA256()
 
-
+    
     # name = 'test1.dat'
     # location = sys.argv[1] + name
     # h = hashlib.sha256()

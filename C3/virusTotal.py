@@ -124,18 +124,15 @@ def extract_string_literals():
 
                     markup = str(markup)
 
-                    # TODO: CHECKT THE FOLLOWING REGEX EXPRESSION TO MAKE SURE THAT ITS CAPTURING CORRECTLY
+                    # TODO: CHECK THE FOLLOWING REGEX EXPRESSION TO MAKE SURE THAT ITS CAPTURING CORRECTLY
                     string_regex = re.compile(r"['\"](.*?)['\"]")
-                    # print the name of the function were currently checking for string literals
-                    print("Function name: ", function.getName())
-                    # print the string literals found in the function
-                    print("Found the following string: ", re.findall(string_regex, markup))
 
-
-
-
-                    print("\n\n")
-
+                    if re.findall(string_regex, markup):
+                        # print the name of the function were currently checking for string literals
+                        print("Function name: ", function.getName())
+                        # print the string literals found in the function
+                        print("Found the following string: ", re.findall(string_regex, markup))
+                        print("\n")
 
             except Exception as e:
                 print(e)

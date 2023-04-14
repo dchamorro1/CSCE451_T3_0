@@ -23,6 +23,8 @@ from ghidra.program.model.symbol import SymbolUtilities
 
 from ghidra.app.decompiler import DecompileResults
 
+import table
+
 chosen_option = None
 
 class MyGUI:
@@ -31,7 +33,6 @@ class MyGUI:
 
         self.frame = JFrame("Choose an Option")
         self.frame.setSize(300, 100)
-        self.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
 
         panel = JPanel()
 
@@ -62,6 +63,7 @@ class MyGUI:
 
 
 
+# Virustotal
 key =  '6a90acebb6999746d1649a244d982d162cf87488440afc942d46a99abe4ee98a'
 url = "https://www.virustotal.com/api/v3/"
 def get_results(scan_url):
@@ -91,6 +93,7 @@ def submit_file(name, location): # location includes name
     return json.loads(scan_result)
 
 
+# String extractor
 def extract_string_literals():
     # Set up the decompiler interface
     decomp_interface = DecompInterface()
@@ -100,7 +103,7 @@ def extract_string_literals():
     # Get all functions in the binary
     functions = currentProgram.getFunctionManager().getFunctions(True)
 
-    matches = []
+    matches = {}
 
     # Iterate over all functions and extract string literals
     with open('string_literals.txt', 'w') as f:
@@ -129,16 +132,24 @@ def extract_string_literals():
 
                     if re.findall(string_regex, markup):
                         # print the name of the function were currently checking for string literals
-                        print("Function name: ", function.getName())
+                        fxn_name = function.getName()
+                        fxn_lits = re.findall(string_regex, markup)
+                        print("Function name: ", fxn_name)
                         # print the string literals found in the function
-                        print("Found the following string: ", re.findall(string_regex, markup))
+                        print("Found the following string: ", fxn_lits)
                         print("\n")
+                        if(fxn_name not in matches):
+                            matches[fxn_name] = []
+                        matches[fxn_name].extend(fxn_lits)
 
             except Exception as e:
                 print(e)
 
     # Clean up the decompiler interface
     decomp_interface.dispose()
+    print(matches)
+    return matches
+
 
 def main():
     print("Starting Script")
@@ -210,7 +221,10 @@ def main():
     if chosen_option == "string_extractor":
         # TODO: Code for string extractor starts HERE vvv
         print("Executing string extractor code")
-        extract_string_literals()
+        strings = extract_string_literals()
+        
+        print(strings.keys(), strings.values())
+        table.displayTable(["Function", "Strings"], strings.items())
         pass
 
 

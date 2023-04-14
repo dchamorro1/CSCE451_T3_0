@@ -4,7 +4,7 @@ from java.awt import Dimension
 
 def displayTable(headers, data):
     # Create the JFrame
-    frame = JFrame("Table Example")
+    frame = JFrame("Functions with Strings")
     frame.setSize(400, 300)
 
     # Create the JTable

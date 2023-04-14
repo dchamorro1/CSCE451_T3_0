@@ -31,7 +31,7 @@ class MyGUI:
     global chosen_option
     def __init__(self):
 
-        self.frame = JFrame("Choose an Option potato")
+        self.frame = JFrame("Choose an Option")
         self.frame.setSize(300, 100)
 
         panel = JPanel()

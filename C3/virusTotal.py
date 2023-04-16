@@ -37,6 +37,7 @@ def displayTable(headers, data):
     # Displaying Table
     frame.setPreferredSize(Dimension(400, 300))
     frame.pack()
+    frame.setLocationRelativeTo(None) # center window
     frame.setVisible(True)
 
 chosen_option = None
@@ -57,6 +58,7 @@ class MyGUI:
         panel.add(string_button)
 
         self.frame.add(panel)
+        self.frame.setLocationRelativeTo(None) # center window
         self.frame.setVisible(True)
 
 # TODO: FIx bugs

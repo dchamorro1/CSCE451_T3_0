@@ -216,7 +216,18 @@ def main():
         print('Display output')
         print(json.dumps(result, indent=4, sort_keys=True))
 
-        # TODO: Make output json more readable
+        # TODO: Make output json more readable with table
+
+        # Parse the JSON data to extract the attributes
+        attributes = result['data']['attributes']
+
+        rows = []
+        for key, value in attributes.items():
+            rows.append([key, str(value)])
+        headers = ["Attribute", "Value"]
+
+        table.displayTable(headers,rows)
+        pass
 
     if chosen_option == "string_extractor":
         # TODO: Code for string extractor starts HERE vvv

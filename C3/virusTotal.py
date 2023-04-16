@@ -15,6 +15,8 @@ import hashlib
 import time
 
 from javax.swing import JFrame, JButton, JPanel, SwingUtilities
+from javax.swing import JTable, JScrollPane
+from java.awt import Dimension
 
 from java.util.concurrent import CountDownLatch
 
@@ -23,7 +25,19 @@ from ghidra.program.model.symbol import SymbolUtilities
 
 from ghidra.app.decompiler import DecompileResults
 
-import table
+def displayTable(headers, data):
+    frame = JFrame("Functions with Strings")
+    frame.setSize(400, 300)
+
+    # Create the Table
+    table = JTable(data, headers)
+    scrollPane = JScrollPane(table)
+    frame.add(scrollPane)
+
+    # Displaying Table
+    frame.setPreferredSize(Dimension(400, 300))
+    frame.pack()
+    frame.setVisible(True)
 
 chosen_option = None
 
@@ -226,7 +240,7 @@ def main():
             rows.append([key, str(value)])
         headers = ["Attribute", "Value"]
 
-        table.displayTable(headers,rows)
+        displayTable(headers,rows)
         pass
 
     if chosen_option == "string_extractor":
@@ -235,7 +249,7 @@ def main():
         strings = extract_string_literals()
         
         print(strings.keys(), strings.values())
-        table.displayTable(["Function", "Strings"], strings.items())
+        displayTable(["Function", "Strings"], strings.items())
         pass
 
 

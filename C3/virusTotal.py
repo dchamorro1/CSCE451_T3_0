@@ -58,7 +58,7 @@ class MyGUI:
         panel.add(string_button)
 
         self.frame.add(panel)
-        self.frame.setLocationRelativeTo(None) # center window
+        # self.frame.setLocationRelativeTo(None) # center window
         self.frame.setVisible(True)
 
 # TODO: FIx bugs

@@ -688,7 +688,20 @@ def main():
     latch = CountDownLatch(1)
     gui = MyGUI()
 
-    while chosen_option != "malware" and chosen_option != "string_extractor" and chosen_option != "find_string_min_length":
+    valid_options = ["malware", 
+                     "string_extractor", 
+                     "find_string_min_length", 
+                     "find_exact_string", 
+                     "query_register", 
+                     "output_decompiled",
+                     "get_listing_variables",
+                     "get_listing_functions",
+                     "rename_listing",
+                     "to_ascii",
+                     "to_dec",
+                     "help"]
+
+    while chosen_option not in valid_options:
         pass
 
     if chosen_option == "malware":

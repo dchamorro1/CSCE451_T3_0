@@ -1,3 +1,11 @@
+#TortillaTotal
+#@author Team 3.0 and 8.1
+#@category _NEW_
+#@keybinding 
+#@menupath Tools.Misc.Tortilla Total
+#@toolbar tortillas.png
+
+
 ########################### imports ############################
 from ghidra.util import Msg
 from java.lang import IllegalArgumentException
@@ -168,6 +176,14 @@ def get_results(scan_url):
     print(command2)
     result = subprocess.check_output(command2,shell=True)
     print(result)
+
+    if askYesNo("Malware analysis", "Would you like to save the analysis report in your local computer?"):
+        filepath = askDirectory("Save location", "Save").getAbsolutePath() + "/malware_analysis.txt"
+        popup("Save location: " + filepath)
+        if os.path.exists(filepath):
+            os.remove(filepath)
+        write_file(filepath, "w", result) 
+
     result = json.loads(result)
     return result
 
@@ -244,7 +260,11 @@ def extract_string_literals():
     return matches
 
 def malware():
+
+    
     print("Executing malware code")
+
+    
 
     # Try hash
     state = getState()
@@ -638,8 +658,14 @@ def ascii_converter(mode): # mode either toDec or toAscii
 def help():
 
     helpstring = """
-Tortilla Tool aims to enhance a reverser's experience by providing rapid edit features as highlighted below.
-Developers: Eliana, Alfonso, Chun Hui, Michael
+Tortilla Total aims to enhance a reverser's experience by providing rapid edit features and malware analysis as highlighted below.
+Developers: Eliana, Alfonso, Chun Hui, Michael, Caleb, Jarrett, Daniel
+
+Malware Detector: 
+    Passes the binary file to VirusTotal to detect if there are known malware in the code.
+
+String Extractor:
+    Extracts all the strings in the code.
 
 String search:
     Searches for exact matches to a given input string. 
@@ -669,13 +695,13 @@ Rename listing variables:
     This will rename all variables in the decompiled code.
     To check if this has worked, get all variables by running the script again to obtain symbols.csv, then compare.
 
-Decimal to ASCII/ ASCII to Decimal converter:
+Decimal to ASCII / ASCII to Decimal converter:
     A helpful converter for decimal/ ASCII.
     """
     
     shorterHelp = """
-Tortilla Tool aims to enhance a reverser's experience by providing rapid edit features.
-Developers: Eliana, Alfonso, Chun Hui, Michael
+Tortilla Total aims to enhance a reverser's experience by providing rapid edit features and malware analysis as highlighted below.
+Developers: Eliana, Alfonso, Chun Hui, Michael, Caleb, Jarrett, Daniel
 
 Please refer to the console in CodeBrowser for more information on each function.
     """
@@ -741,7 +767,8 @@ def main():
         help()
 
     else:
-        raise CancelledException
+        print("Operation ended.")
+        # raise CancelledException
 
 
 if __name__ == "__main__":

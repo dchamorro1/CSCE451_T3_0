@@ -33,19 +33,54 @@ from javax.swing import JTable, JScrollPane
 from java.awt import Dimension
 from java.util.concurrent import CountDownLatch
 from ghidra.program.model.symbol import SymbolUtilities
+import javax.swing.table.DefaultTableCellRenderer as DefaultTableCellRenderer
+import java.awt.Font as Font
+
+from javax.swing import JFrame, JTable, JScrollPane, SwingConstants
+from javax.swing.table import DefaultTableCellRenderer, TableColumn
+from java.awt import Color, Font, Component
 
 # Table
-def displayTable(headers, data):
-    frame = JFrame("Functions with Strings")
-    frame.setSize(400, 300)
+def displayTable(headers, data, title):
+    frame = JFrame(title)
+    frame.setSize(1200, 400)
 
     # Create the Table
     table = JTable(data, headers)
+
+    # Set font and size of headers and cells
+    table = JTable(data, headers)
+    table.getTableHeader().setFont(Font("Arial", Font.BOLD, 12))
+    table.setFont(Font("Arial", Font.PLAIN, 12))
+
+    # Set background colors of table and headers
+    table.setBackground(Color.WHITE)
+    table.getTableHeader().setBackground(Color.LIGHT_GRAY)
+
+    # Add alternating row colors
+    table.setRowHeight(25)
+
+    # Adjust column widths to fit content
+    table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF)
+    for i in range(table.getColumnCount()):
+        column = table.getColumnModel().getColumn(i)
+        preferredWidth = column.getMinWidth()
+        maxWidth = column.getMaxWidth()
+        for j in range(table.getRowCount()):
+            cellRenderer = table.getCellRenderer(j, i)
+            c = table.prepareRenderer(cellRenderer, j, i)
+            width = c.getPreferredSize().width + table.getIntercellSpacing().width
+            preferredWidth = max(preferredWidth, width)
+            if preferredWidth >= maxWidth:
+                preferredWidth = maxWidth
+                break
+        column.setPreferredWidth(preferredWidth)
+
     scrollPane = JScrollPane(table)
     frame.add(scrollPane)
 
     # Displaying Table
-    frame.setPreferredSize(Dimension(400, 300))
+    frame.setPreferredSize(Dimension(1200, 400))
     frame.pack()
     frame.setLocationRelativeTo(None) # center window
     frame.setVisible(True)
@@ -260,11 +295,7 @@ def extract_string_literals():
     return matches
 
 def malware():
-
-    
     print("Executing malware code")
-
-    
 
     # Try hash
     state = getState()
@@ -312,7 +343,7 @@ def malware():
         rows.append([key, str(value)])
     headers = ["Attribute", "Value"]
 
-    displayTable(headers,rows)
+    displayTable(headers, rows, title="Malware Analysis and File Data")
     pass
 
 def string_extractor():
@@ -320,7 +351,7 @@ def string_extractor():
     print("Executing string extractor code")
     strings = extract_string_literals() 
     print(strings.keys(), strings.values())
-    displayTable(["Function", "Strings"], strings.items())
+    displayTable(["Function", "Strings"], strings.items(), title="Function and String Literals")
     pass
 
 ######################## Tortilla methods ########################

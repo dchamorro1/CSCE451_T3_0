@@ -18,6 +18,7 @@ from ghidra.program.model.symbol import SourceType
 from ghidra.app.decompiler import DecompileOptions, DecompInterface
 from ghidra.app.decompiler import DecompileResults
 from ghidra.util.task import ConsoleTaskMonitor
+from ghidra.program.model.listing import CodeUnit
 import os
 import re
 import csv
@@ -123,6 +124,9 @@ class MyGUI:
         rename_button = JButton("Rename listing variables", actionPerformed=self.rename_var)
         panel.add(rename_button)
 
+        detect_url_button = JButton("Detect URLs", actionPerformed=self.url_detect)
+        panel.add(detect_url_button)
+
         to_ascii_button = JButton("Decimal to ASCII converter", actionPerformed=self.ascii_convert)
         panel.add(to_ascii_button)
 
@@ -182,6 +186,11 @@ class MyGUI:
     def rename_var(self, event):
         global chosen_option 
         chosen_option = "rename_listing"
+        SwingUtilities.getWindowAncestor(event.getSource()).dispose()
+    
+    def url_detect(self, event):
+        global chosen_option 
+        chosen_option = "detect_url"
         SwingUtilities.getWindowAncestor(event.getSource()).dispose()
 
     def ascii_convert(self, event):
@@ -686,6 +695,47 @@ def ascii_converter(mode): # mode either toDec or toAscii
     else:
         print("Invalid mode")
 
+
+def detect_url():
+    '''Detects strings which may contain URL'''
+    detect_list = ["http", ".edu", "https", ".org", ".net", ".int", ".gov", ".mil", "//", ".com", "www"]
+    try: 
+        mem_list = []
+        add_list = []
+        url_list = []
+
+        ss = StringSearcher(currentProgram, 3, 1, False, True)
+
+        def callback(s):
+            found_string = s.getString(currentProgram.getMemory())
+            split_list = found_string.split() 
+            for split in split_list:
+                for d in detect_list:
+                    if d in split:
+                        mem_list.append(s)
+                        url_list.append(split)
+
+                        addr_found = find(found_string)
+                        if(addr_found != None):
+                            add_list.append(addr_found)
+
+        temp = ss.search(None, callback, True, monitor)
+
+        if not url_list: 
+            print("No URLs found.")
+            popup("No URLs found.")
+        else:
+            print("URLs found.")
+            popup("URLs found. The table shows the code unit the URL is in, while the console shows URLs only.")
+            for x in range(len(mem_list)):
+                print(url_list[x] , " found at " , mem_list[x])
+            
+            show(add_list)
+
+    except Exception as e:
+            print(e)
+
+
 def help():
 
     helpstring = """
@@ -756,6 +806,7 @@ def main():
                      "rename_listing",
                      "to_ascii",
                      "to_dec",
+                     "detect_url",
                      "help"]
 
     while chosen_option not in valid_options:
@@ -787,6 +838,9 @@ def main():
 
     if chosen_option == "rename_listing":
         rename_listing()
+    
+    if chosen_option == "detect_url":
+        detect_url()
 
     if chosen_option == "to_ascii":
         ascii_converter('toAscii')

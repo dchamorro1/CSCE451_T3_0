@@ -1,8 +1,8 @@
-#TortillaTotal
-#@author Team 3.0 and 8.1
+#Totallia
+#@author Team 3.1 and 3.2 (previously Team 3.0 and 8.1)
 #@category _NEW_
 #@keybinding 
-#@menupath Tools.Misc.Tortilla Total
+#@menupath Tools.Misc.Totallia
 #@toolbar tortillas.png
 
 
@@ -803,7 +803,7 @@ def detect_buffer_overflow():
 def help():
 
     helpstring = """
-Tortilla Total aims to enhance a reverser's experience by providing rapid edit features and malware analysis as highlighted below.
+Totallia aims to enhance a reverser's experience by providing rapid edit features and malware analysis as highlighted below.
 Developers: Eliana, Alfonso, Chun Hui, Michael, Caleb, Jarrett, Daniel
 
 Malware Detector: 
@@ -848,7 +848,7 @@ Decimal to ASCII / ASCII to Decimal converter:
     """
     
     shorterHelp = """
-Tortilla Total aims to enhance a reverser's experience by providing rapid edit features and malware analysis as highlighted below.
+Totallia aims to enhance a reverser's experience by providing rapid edit features and malware analysis as highlighted below.
 Developers: Eliana, Alfonso, Chun Hui, Michael, Caleb, Jarrett, Daniel
 
 Please refer to the console in CodeBrowser for more information on each function.

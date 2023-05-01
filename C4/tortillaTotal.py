@@ -11,10 +11,14 @@ from ghidra.util import Msg
 from java.lang import IllegalArgumentException
 from ghidra.program.util.string import StringSearcher
 from ghidra.util.exception import CancelledException
-from ghidra.program.model.address import AddressSet
 from ghidra.program.model import address
+from ghidra.program.model.address import AddressSet
 from ghidra.program.model.address import Address
 from ghidra.program.model.symbol import SourceType
+from ghidra.program.model.lang import OperandType
+from ghidra.program.model.lang import Register
+from ghidra.program.model.pcode import PcodeOp, PcodeOpAST, Varnode, HighVariable
+from ghidra.program.model.symbol import RefType
 from ghidra.app.decompiler import DecompileOptions, DecompInterface
 from ghidra.app.decompiler import DecompileResults
 from ghidra.util.task import ConsoleTaskMonitor
@@ -100,6 +104,9 @@ class MyGUI:
         malware_button = JButton("Malware Detector", actionPerformed=self.malware_detector)
         panel.add(malware_button)
 
+        buffer_overflow_button = JButton("Buffer Overflow Detector", actionPerformed=self.buffer_overflow_detector)
+        panel.add(buffer_overflow_button)
+
         string_button = JButton("String Extractor", actionPerformed=self.string_extractor)
         panel.add(string_button)
         
@@ -145,7 +152,12 @@ class MyGUI:
         print("You clicked the Malware Detector button.")
         chosen_option = "malware"
         SwingUtilities.getWindowAncestor(event.getSource()).dispose()
-        # self.latch.countDown()
+    
+    def buffer_overflow_detector(self, event):
+        global chosen_option
+        print("You clicked the Buffer Overflow Detector button.")
+        chosen_option = "buffer_overflow"
+        SwingUtilities.getWindowAncestor(event.getSource()).dispose()
 
     def string_extractor(self, event):
         global chosen_option
@@ -695,7 +707,6 @@ def ascii_converter(mode): # mode either toDec or toAscii
     else:
         print("Invalid mode")
 
-
 def detect_url():
     '''Detects strings which may contain URL'''
     detect_list = ["http", ".edu", "https", ".org", ".net", ".int", ".gov", ".mil", "//", ".com", "www"]
@@ -735,6 +746,59 @@ def detect_url():
     except Exception as e:
             print(e)
 
+# Buffer overflow logic
+
+def detect_buffer_overflow():
+    # Iterate over all functions in the program
+    overflow_detected = False
+
+    program = getCurrentProgram()
+    functions = program.getFunctionManager().getFunctions(True)
+    for function in functions:
+        # Get the stack frame for the current function
+        frame = function.getStackFrame()
+        if not frame:
+            continue
+
+        # Iterate over all variables in the stack frame
+        variables = frame.getStackVariables()
+        for variable in variables:
+            var_name = variable.getName()
+            var_offset = variable.getStackOffset()
+            var_size = variable.getLength()
+
+            # Check if the variable is a buffer or an array
+            if var_size <= 1:
+                continue
+
+            # Iterate over all instructions in the function
+            instruction_iterator = program.getListing().getInstructions(function.getBody(), True)
+            for instruction in instruction_iterator:
+                mnemonic = instruction.getMnemonicString()
+                # Check if the instruction is writing to the buffer
+                if not mnemonic in ['MOV', 'MOVZX', 'MOVSX', 'LEA']:
+                    continue
+
+                for op_index in range(instruction.getNumOperands()):
+                    operand = instruction.getOpObjects(op_index)[0]
+                    if operand is None or not isinstance(operand, Varnode) or operand.isAddressConstant() or operand.getAddress() is None:
+                        continue
+
+                    refs = instruction.getReferencesTo(operand)
+                    for ref in refs:
+                        if ref.getReferenceType() != RefType.WRITE:
+                            continue
+
+                        ref_addr = ref.getFromAddress()
+                        ref_offset = ref_addr.getOffset()
+                        if var_offset >= ref_offset and var_offset + var_size <= ref_offset + operand.getSize():
+                            overflow_detected = True
+                            print('Potential buffer overflow detected in function {} at instruction {} with variable {} at offset {} and size {}'.format(function.getName(), instruction.getAddress(), var_name, var_offset, var_size))
+
+    if overflow_detected:
+        return
+    
+    print("No overflows detected in the program")
 
 def help():
 
@@ -744,6 +808,9 @@ Developers: Eliana, Alfonso, Chun Hui, Michael, Caleb, Jarrett, Daniel
 
 Malware Detector: 
     Passes the binary file to VirusTotal to detect if there are known malware in the code.
+
+Buffer Overflow Detector: 
+    Detects if there are buffer overflows in the given binary.
 
 String Extractor:
     Extracts all the strings in the code.
@@ -795,7 +862,8 @@ def main():
     latch = CountDownLatch(1)
     gui = MyGUI()
 
-    valid_options = ["malware", 
+    valid_options = ["malware",
+                     "buffer_overflow",
                      "string_extractor", 
                      "find_string_min_length", 
                      "find_exact_string", 
@@ -814,6 +882,9 @@ def main():
 
     if chosen_option == "malware":
         malware()
+
+    if chosen_option == "buffer_overflow":
+        detect_buffer_overflow()
 
     if chosen_option == "string_extractor":
         string_extractor()

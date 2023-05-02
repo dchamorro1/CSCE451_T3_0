@@ -107,9 +107,6 @@ class MyGUI:
         buffer_overflow_button = JButton("Buffer Overflow Detector", actionPerformed=self.buffer_overflow_detector)
         panel.add(buffer_overflow_button)
 
-        string_button = JButton("String Extractor", actionPerformed=self.string_extractor)
-        panel.add(string_button)
-        
         find_string_button = JButton("Find strings with minimum length", actionPerformed=self.find_string)
         panel.add(find_string_button)
 
@@ -149,20 +146,12 @@ class MyGUI:
 
     def malware_detector(self, event):
         global chosen_option
-        print("You clicked the Malware Detector button.")
         chosen_option = "malware"
         SwingUtilities.getWindowAncestor(event.getSource()).dispose()
     
     def buffer_overflow_detector(self, event):
         global chosen_option
-        print("You clicked the Buffer Overflow Detector button.")
         chosen_option = "buffer_overflow"
-        SwingUtilities.getWindowAncestor(event.getSource()).dispose()
-
-    def string_extractor(self, event):
-        global chosen_option
-        print("You clicked the String Extractor button.")
-        chosen_option = "string_extractor"
         SwingUtilities.getWindowAncestor(event.getSource()).dispose()
 
     def find_string(self, event):
@@ -367,14 +356,6 @@ def malware():
     displayTable(headers, rows, title="Malware Analysis and File Data")
     pass
 
-def string_extractor():
-    # Code for string extractor starts HERE vvv
-    print("Executing string extractor code")
-    strings = extract_string_literals() 
-    print(strings.keys(), strings.values())
-    displayTable(["Function", "Strings"], strings.items(), title="Function and String Literals")
-    pass
-
 ######################## Tortilla methods ########################
 
 
@@ -542,7 +523,7 @@ def output_decompiled():
     funcIter = currentProgram.getListing().getFunctions(True)
 
     #ask filepath
-    filepath = askDirectory("Save location", "Save").getAbsolutePath() + "\\decompiled_code.txt"
+    filepath = askDirectory("Save location", "Save").getAbsolutePath() + "/decompiled_code.txt"     #use \\decompiled_code.txt for windows
     print("Save location: " + filepath)
     if os.path.exists(filepath):
         os.remove(filepath)
@@ -563,7 +544,7 @@ def get_listing_variables():
     '''symbols will be returned in a csv file.'''
 
     #ask filepath
-    filepath = askDirectory("Save location", "Save").getAbsolutePath() + "\\symbols.csv"
+    filepath = askDirectory("Save location", "Save").getAbsolutePath() + "/symbols.csv"     #use \\symbols.csv for windows
     print("Save location: " + filepath)
     if os.path.exists(filepath):
         os.remove(filepath)
@@ -593,7 +574,7 @@ def get_listing_functions():
     '''function details will be returned in a csv file'''
 
     #ask filepath
-    filepath = askDirectory("Save location", "Save").getAbsolutePath() + "\\functions.csv"
+    filepath = askDirectory("Save location", "Save").getAbsolutePath() + "/functions.csv"       #use \\functions.csv for windows
     print("Save location: " + filepath)
     if os.path.exists(filepath):
         os.remove(filepath)
@@ -709,7 +690,7 @@ def ascii_converter(mode): # mode either toDec or toAscii
 
 def detect_url():
     '''Detects strings which may contain URL'''
-    detect_list = ["http", ".edu", "https", ".org", ".net", ".int", ".gov", ".mil", "//", ".com", "www"]
+    detect_list = ["http", ".edu", "https", ".org", ".net", ".int", ".gov", ".mil", "//", ".com", "www", ".onion"]
     try: 
         mem_list = []
         add_list = []
@@ -737,7 +718,7 @@ def detect_url():
             popup("No URLs found.")
         else:
             print("URLs found.")
-            popup("URLs found. The table shows the code unit the URL is in, while the console shows URLs only.")
+            popup("URLs found. Refer to the console for more information.")
             for x in range(len(mem_list)):
                 print(url_list[x] , " found at " , mem_list[x])
             
@@ -798,7 +779,7 @@ def detect_buffer_overflow():
     if overflow_detected:
         return
     
-    print("No overflows detected in the program")
+    print("No potential overflows detected in the program")
 
 def help():
 
